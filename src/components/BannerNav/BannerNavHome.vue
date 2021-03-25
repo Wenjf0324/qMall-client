@@ -1,0 +1,187 @@
+<template>
+  <div>
+    <div class="banner-nav">
+      <div class="wrap">
+        <div class="banner-nav-left">
+          <div class="menu">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-menu"></use>
+            </svg>
+            <span>商品分类</span>
+          </div>
+
+          <div class="menu-list wrap">
+            <div class="kind-list">
+              <ul>
+                <li
+                  v-for="(p, index) in petList"
+                  :key="index"
+                  :class="{ selected: index === currentIndex }"
+                  @mouseenter="currentIndex = index"
+                >
+                  <svg class="icon" aria-hidden="true">
+                    <use :xlink:href="p.icon"></use>
+                  </svg>
+                  <p>{{ p.name }}</p>
+                </li>
+              </ul>
+            </div>
+
+            <div class="shop-list">
+              <ul class="dog-list" v-show="currentIndex === 0">
+                <li
+                  v-for="(item, index) in dog_list"
+                  :key="index"
+                  @click="switchTo('/dog')"
+                >
+                  <svg class="icon" aria-hidden="true">
+                    <use :xlink:href="item.icon"></use>
+                  </svg>
+                  <span>{{ item.name }} ></span>
+                </li>
+              </ul>
+
+              <ul class="dog-list" v-show="currentIndex === 1">
+                <li
+                  v-for="(item, index) in cat_list"
+                  :key="index"
+                  @click="switchTo('/cat')"
+                >
+                  <svg class="icon" aria-hidden="true">
+                    <use :xlink:href="item.icon"></use>
+                  </svg>
+                  <span>{{ item.name }} ></span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="banner-nav-right">
+          <ul>
+            <li @click="switchTo('/')">首页</li>
+            <li @click="switchTo('/dog')">狗狗专区</li>
+            <li @click="switchTo('/cat')">猫咪专区</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      currentIndex: 0,
+      menuIndex: 0,
+      menuVisible: false,
+      petList: [
+        { name: "狗狗", icon: "#icon-gougou" },
+        { name: "猫咪", icon: "#icon-maomi" }
+      ],
+      dog_list: [
+        { name: "狗狗主粮", icon: "#icon-zhushi" },
+        { name: "狗狗零食", icon: "#icon-lingshi1" },
+        { name: "狗狗日用", icon: "#icon-riyong" },
+        { name: "狗狗医疗", icon: "#icon-yiliao" },
+        { name: "狗狗玩具", icon: "#icon-wanju" }
+      ],
+      cat_list: [
+        { name: "猫咪主粮", icon: "#icon-zhushi" },
+        { name: "猫咪零食", icon: "#icon-lingshi1" },
+        { name: "猫咪日用", icon: "#icon-riyong" },
+        { name: "猫咪医疗", icon: "#icon-yiliao" },
+        { name: "猫咪玩具", icon: "#icon-wanju" }
+      ]
+    };
+  },
+  methods: {
+    switchTo(path) {
+      //console.log(this.$router)
+      this.$router.replace(path);
+    }
+  }
+};
+</script>
+
+<style lang="stylus" scoped>
+.banner-nav
+
+    .wrap
+        display flex
+    .banner-nav-left
+        width 220px
+        .menu
+            width 220px
+            height 36px
+            color #fff
+            font-weight bold
+            background #20bfa9
+            border 1px solid #20bfa9
+            display flex
+            justify-content center
+            align-items center
+            letter-spacing 8px
+            .icon
+              font-size 24px
+              margin-right 8px
+    .banner-nav-right
+        ul
+            display flex
+            margin-left 8px
+            height 36px
+            line-height 36px
+            li
+                padding 0 24px
+                &:hover
+                    cursor pointer
+                    color #20bfa9
+
+.menu-list
+  display flex
+  position relative
+  .kind-list
+    width 54px
+    position absolute
+    left -54px
+    li
+      font-size 14px
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      padding 22px 0
+      text-align center
+      color rgba(0, 0, 0, 0.3)
+      cursor pointer
+      &.selected
+        background #fff
+        color #333
+      .icon
+        font-size 25px
+        margin-bottom 4px
+  .shop-list
+      width 220px
+      color #333
+      font-size 15px
+      background #fff
+      position absolute
+      ul
+          height 428px
+          border 1px solid #e1e1e1
+          display flex
+          flex-wrap wrap
+          justify-content center
+      li
+          width 100%
+          display flex
+          justify-content center
+          align-items center
+          border-bottom 1px dashed #e1e1e1
+          .icon
+              color #444
+              margin-right 8px
+              font-size 24px
+          &:hover
+              cursor pointer
+              color #20bfa9
+          &:last-child
+            border-bottom none
+</style>

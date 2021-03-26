@@ -1,41 +1,21 @@
 <template>
   <div class="wrap">
-    <div class="shop-container">
-      <div class="shop-list-title">
-        <h2>
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-yugutou"></use>
-          </svg>
-          猫咪专区
-        </h2>
-        <ul>
-          <li>主食</li>
-          <li>零食</li>
-          <li>日用</li>
-          <li>医疗</li>
-          <li>玩具</li>
-        </ul>
-      </div>
-
-      <ul class="shop-list">
-        <shop-list
-          tag="li"
-          v-for="(item, index) in cat_list"
-          :item="item"
-          :key="index"
-        />
-      </ul>
-    </div>
+    <ProductList
+      title_icon="#icon-yugutou"
+      title="猫咪专区"
+      :menu_nav="menu_nav"
+      :shop_list="cat_list"
+    />
   </div>
 </template>
 
 <script>
-import ShopList from "../../../components/ShopList";
-
+import ProductList from "../../../components/PruductList";
 export default {
-  components: { ShopList },
+  components: { ProductList },
   data() {
     return {
+      menu_nav: ["主食", "零食", "日用", "医疗", "玩具"],
       cat_list: [
         {
           img_url: require("../../../assets/images/shop_list/cat/goods1.jpg"),
@@ -92,49 +72,3 @@ export default {
   }
 };
 </script>
-
-<style lang="stylus" scoped>
-.shop-container
-    margin-top 32px
-    .shop-list-title
-        padding 8px 6px
-        display flex
-        justify-content space-between
-        border-bottom 2px solid #333
-        h2
-            font-size 26px
-            color #333
-            font-weight normal
-        ul
-            display flex
-            align-items flex-end
-            color #666
-            font-size 14px
-            li
-                padding 0 10px
-                border-right 1px solid #999
-                &:last-child
-                    border-right none
-
-    .shop-list
-        display flex
-        flex-wrap wrap
-        margin-right -16px
-        li
-            width 225px
-            margin 0 16px 16px 0
-            padding 8px
-            border 1px solid #e7e7e7
-            .list-item-title
-                font-size 12px
-                color #666
-                line-height 1.5em
-                height 40px
-                overflow hidden
-            .item-price
-                color #e31436
-                font-size 16px
-                font-weight bold
-                display inline-block
-                margin 8px 0
-</style>

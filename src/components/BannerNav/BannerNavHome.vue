@@ -32,7 +32,7 @@
                 <li
                   v-for="(item, index) in dog_list"
                   :key="index"
-                  @click="switchTo('/dog')"
+                  @click="switchTo(item.path)"
                 >
                   <svg class="icon" aria-hidden="true">
                     <use :xlink:href="item.icon"></use>
@@ -45,7 +45,7 @@
                 <li
                   v-for="(item, index) in cat_list"
                   :key="index"
-                  @click="switchTo('/cat')"
+                  @click="switchTo(item.path)"
                 >
                   <svg class="icon" aria-hidden="true">
                     <use :xlink:href="item.icon"></use>
@@ -80,18 +80,18 @@ export default {
         { name: "猫咪", icon: "#icon-maomi" }
       ],
       dog_list: [
-        { name: "狗狗主粮", icon: "#icon-zhushi" },
-        { name: "狗狗零食", icon: "#icon-lingshi1" },
-        { name: "狗狗日用", icon: "#icon-riyong" },
-        { name: "狗狗医疗", icon: "#icon-yiliao" },
-        { name: "狗狗玩具", icon: "#icon-wanju" }
+        { name: "狗狗主粮", icon: "#icon-zhushi", path: "/dog/food" },
+        { name: "狗狗零食", icon: "#icon-lingshi1", path: "/dog/snacks" },
+        { name: "狗狗日用", icon: "#icon-riyong", path: "/dog/daily" },
+        { name: "狗狗医疗", icon: "#icon-yiliao", path: "/dog/health" },
+        { name: "狗狗玩具", icon: "#icon-wanju", path: "/dog/toy" }
       ],
       cat_list: [
-        { name: "猫咪主粮", icon: "#icon-zhushi" },
-        { name: "猫咪零食", icon: "#icon-lingshi1" },
-        { name: "猫咪日用", icon: "#icon-riyong" },
-        { name: "猫咪医疗", icon: "#icon-yiliao" },
-        { name: "猫咪玩具", icon: "#icon-wanju" }
+        { name: "猫咪主粮", icon: "#icon-zhushi", path: "/cat/food" },
+        { name: "猫咪零食", icon: "#icon-lingshi1", path: "/cat/snacks" },
+        { name: "猫咪日用", icon: "#icon-riyong", path: "/cat/daily" },
+        { name: "猫咪医疗", icon: "#icon-yiliao", path: "/cat/health" },
+        { name: "猫咪玩具", icon: "#icon-wanju", path: "/cat/toy" }
       ]
     };
   },
@@ -182,6 +182,8 @@ export default {
           &:hover
               cursor pointer
               color #20bfa9
+              border-top 1px solid #20bfa9
+              border-bottom 1px solid #20bfa9
           &:last-child
             border-bottom none
 </style>

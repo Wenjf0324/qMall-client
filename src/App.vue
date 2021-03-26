@@ -1,29 +1,39 @@
 <template>
   <div id="app">
-    <top-nav v-show="$route.meta.showTopNav" />
+    <nav-header v-show="$route.meta.showNavHeader" />
     <router-view></router-view>
     <Footer />
   </div>
 </template>
 
 <script>
-import TopNav from "./components/TopNav";
+import NavHeader from "./components/NavHeader";
 import Footer from "./components/Footer";
+import storage from "./storage/index";
 export default {
   name: "App",
   created() {
     this.$store.dispatch("getUserInfo");
   },
   components: {
-    TopNav,
+    NavHeader,
     Footer
+  },
+  mounted() {
+    // storage.setItem("a", 1);
+    // storage.setItem("user", { a: 1 });
+    // storage.setItem("abc", { a: 1 }, "user");
+    // storage.clear("a");
+    // storage.clear("a", "user");
+    this.axios.get("/api/homecasual").then(res => {
+      this.res = res;
+    });
   }
 };
-
-TopNav;
 </script>
 
 <style lang="stylus" scoped>
+// @import '../static/css/reset.scss'
 #app
     width 100%
     height 100%

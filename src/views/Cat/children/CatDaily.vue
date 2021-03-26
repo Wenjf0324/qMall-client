@@ -1,30 +1,16 @@
 <template>
   <div v-if="catdailylist">
-    <ul class="shop-list" v-if="catdailylist.length > 0">
-      <shop-list
-        tag="li"
-        v-for="(item, index) in catdailylist"
-        :item="item"
-        :key="index"
-      />
-    </ul>
+    <GoodsList :goodslist="catdailylist" />
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import ShopList from "../../../components/ShopList.vue";
+import GoodsList from "../../../components/GoodsList";
 export default {
-  components: { ShopList },
+  components: { GoodsList },
   computed: {
     ...mapState(["catdailylist"])
   }
 };
 </script>
-
-<style lang="stylus" scoped>
-.shop-list
-      display flex
-      flex-wrap wrap
-      justify-content left
-</style>

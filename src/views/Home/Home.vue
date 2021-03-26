@@ -1,8 +1,5 @@
 <template>
   <div class="home">
-    <!-- 头部 -->
-    <Header />
-
     <!-- 导航 -->
     <BannerNavHome />
 
@@ -38,18 +35,17 @@
         </div>
       </div>
     </div>
-
     <!-- 商品列表 -->
-    <DogShopList />
-    <CatShopList />
+    <div class="pruduct-box">
+      <DogShopList />
+      <CatShopList />
+    </div>
   </div>
 </template>
 
 <script>
 import Swiper from "swiper";
 import "swiper/dist/css/swiper.min.css";
-
-import Header from "../../components/Header";
 import BannerNavHome from "../../components/BannerNav/BannerNavHome";
 import DogShopList from "./children/DogShopList";
 import CatShopList from "./children/CatShopList";
@@ -61,7 +57,7 @@ export default {
   data() {
     return {};
   },
-  components: { Header, BannerNavHome, DogShopList, CatShopList },
+  components: { BannerNavHome, DogShopList, CatShopList },
   computed: {
     ...mapState(["homecasual"])
   },
@@ -142,4 +138,6 @@ export default {
                             cursor pointer
                             border 1px solid #20bfa9
                             color #20bfa9
+    .pruduct-box
+      margin-top 40px
 </style>

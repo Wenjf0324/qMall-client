@@ -1,7 +1,5 @@
 <template>
   <div class="cat-page">
-    <!-- 头部 -->
-    <Header />
     <!-- 导航栏 -->
     <BannerNavOther />
 
@@ -33,16 +31,12 @@
 </template>
 
 <script>
-import Header from "./../../components/Header";
 import BannerNavOther from "./../../components/BannerNav/BannerNavOther";
-import ShopList from "../../components/ShopList";
 
 export default {
   name: "Home",
   components: {
-    Header,
-    BannerNavOther,
-    ShopList
+    BannerNavOther
   },
   mounted() {
     //1.请求猫咪主食的商品列表数据

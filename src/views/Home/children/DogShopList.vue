@@ -1,52 +1,22 @@
 <template>
   <div class="wrap">
-    <div class="shop-container">
-      <div class="shop-list-title">
-        <h2>
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-gutou"></use>
-          </svg>
-          狗狗专区
-        </h2>
-        <ul>
-          <li>主食</li>
-          <li>零食</li>
-          <li>日用</li>
-          <li>医疗</li>
-          <li>玩具</li>
-        </ul>
-      </div>
-
-      <ul class="shop-list">
-        <shop-list
-          tag="li"
-          v-for="(item, index) in dog_list"
-          :item="item"
-          :key="index"
-        />
-      </ul>
-
-      <!-- <ul class="shop-list" v-if="homeshoplist.length > 0">
-        <li
-          class="shop-list-item"
-          v-for="(shop, index) in homeshoplist"
-          :key="index"
-        >
-          <img :src="shop.img_url" alt="" width="100%" />
-          <p class="list-item-title">{{ shop.goods_name }}</p>
-          <span class="item-price">￥{{ shop.normal_price / 100 }}</span>
-        </li>
-      </ul> -->
-    </div>
+    <ProductList
+      title_icon="#icon-gutou"
+      title="狗狗专区"
+      :menu_nav="menu_nav"
+      :shop_list="dog_list"
+    />
   </div>
 </template>
 
 <script>
-import ShopList from "../../../components/ShopList";
+import ProductList from "../../../components/PruductList";
 export default {
-  components: { ShopList },
+  components: { ProductList },
+
   data() {
     return {
+      menu_nav: ["主食", "零食", "日用", "医疗", "玩具"],
       dog_list: [
         {
           img_url: require("../../../assets/images/shop_list/dog/goods1.jpg"),
@@ -103,31 +73,3 @@ export default {
   }
 };
 </script>
-
-<style lang="stylus" scoped>
-.shop-container
-    margin-top 32px
-    .shop-list-title
-        padding 8px 6px
-        display flex
-        justify-content space-between
-        border-bottom 2px solid #333
-        h2
-            font-size 26px
-            color #333
-            font-weight normal
-        ul
-            display flex
-            align-items flex-end
-            color #666
-            font-size 14px
-            li
-                padding 0 10px
-                border-right 1px solid #999
-                &:last-child
-                    border-right none
-    .shop-list
-        display flex
-        flex-wrap wrap
-        margin-right -16px
-</style>

@@ -112,6 +112,14 @@ section {
 body {
   line-height: 1;
 }
+html,
+body {
+  font-family: Helvetica Neue, Helvetica, Arial, Microsoft Yahei,
+    Hiragino Sans GB, Heiti SC, WenQuanYi Micro Hei, sans-serif;
+  color: #333333;
+  background-color: #ffffff;
+  min-width: 1190px;
+}
 ol,
 ul {
   list-style: none;

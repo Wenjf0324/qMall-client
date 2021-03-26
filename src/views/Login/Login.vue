@@ -82,7 +82,7 @@
                 <input
                   type="text"
                   maxlength="11"
-                  placeholder="用户名"
+                  placeholder="用户名/手机"
                   v-model="user_name"
                 />
               </section>
@@ -233,7 +233,6 @@ export default {
           Message.error("请输入正确的手机号码!");
           return;
         }
-
         if (!this.code) {
           Message.error("请输入验证码!");
           return;
@@ -248,20 +247,20 @@ export default {
           this.userInfo = result.message;
         } else {
           this.userInfo = {
-            message: "登录失败，手机号或验证码不正确"
+            message: result.message
           };
         }
       } else {
         //账号密码登录
         //5.4前端校验
         if (!this.user_name) {
-          Message.error("请输入用户名");
+          Message.error("请输入用户名/手机！");
           return;
         } else if (!this.pwd) {
-          Message.error("请输入密码");
+          Message.error("请输入密码！");
           return;
         } else if (!this.captcha) {
-          Message.error("请输入验证码");
+          Message.error("请输入验证码！");
           return;
         }
         //5.5用户名和密码的登录
@@ -271,7 +270,7 @@ export default {
           this.userInfo = result.message;
         } else {
           this.userInfo = {
-            message: "登录失败，用户名或密码不正确"
+            message: result.message
           };
         }
       }

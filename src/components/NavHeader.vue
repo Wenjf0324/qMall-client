@@ -6,9 +6,10 @@
           <span>欢迎访问Q宠商城！</span>
         </div>
         <ul class="topbar-user">
-          <li v-if="user_name">{{ user_name }}</li>
-          <li @click="switchTo('/login')">登录</li>
-          <li @click="switchTo('/')">我的订单</li>
+          <li v-show="userInfo.id">{{ userInfo.user_name }}</li>
+          <li v-show="userInfo.id">退出</li>
+          <li @click="switchTo('/login')" v-show="!userInfo.id">登录</li>
+          <li @click="switchTo('/')" v-show="userInfo.id">我的订单</li>
           <li @click="switchTo('/shoppingcart')">购物车</li>
           <!-- <li @click="switchTo('/me')">个人中心</li> -->
           <!-- <li @click="switchTo('/manager')">管理员通道</li> -->
@@ -45,6 +46,7 @@
 
 <script>
 import Logo from "./Logo";
+import { mapState } from "vuex";
 export default {
   name: "nav-header",
   components: { Logo },
@@ -52,6 +54,9 @@ export default {
     return {
       user_name: ""
     };
+  },
+  computed: {
+    ...mapState(["userInfo"])
   },
   mounted() {},
   methods: {

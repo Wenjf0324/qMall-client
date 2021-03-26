@@ -22,7 +22,7 @@
             <a
               href="javascript:;"
               class="btn"
-              v-shows="btnType === 1"
+              v-show="btnType === 1"
               v-on:click="$emit('submit')"
               >{{ sureText }}</a
             >

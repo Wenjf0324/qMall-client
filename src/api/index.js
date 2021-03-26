@@ -45,7 +45,7 @@ export const getCatToyList = () => ajax(BASE_URL + "/api/cattoylist");
 export const getPhoneCode = phone =>
   ajax(BASE_URL + "/api/sendcode", { phone });
 
-//2.11手机短信验登录
+//2.11手机验证码登录
 export const phoneCodeLogin = (phone, code) =>
   ajax(BASE_URL + "/api/login_code", { phone, code }, "POST");
 

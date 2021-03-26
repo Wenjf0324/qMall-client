@@ -25,9 +25,9 @@ export default {
     // storage.setItem("abc", { a: 1 }, "user");
     // storage.clear("a");
     // storage.clear("a", "user");
-    this.axios.get("/api/homecasual").then(res => {
-      this.res = res;
-    });
+    // this.axios.get("/api/homecasual").then(res => {
+    //   this.res = res;
+    // });
   }
 };
 </script>

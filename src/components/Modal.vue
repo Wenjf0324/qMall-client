@@ -18,22 +18,23 @@
           <div class="modal-body">
             <slot name="body"></slot>
           </div>
+
           <div class="modal-footer">
             <a
               href="javascript:;"
               class="btn"
-              v-show="btnType === 1"
+              v-if="btnType === '1'"
               v-on:click="$emit('submit')"
               >{{ sureText }}</a
             >
             <a
               href="javascript:;"
               class="btn"
-              v-show="btnType === 2"
+              v-if="btnType === '2'"
               v-on:click="$emit('cancel')"
               >{{ cancelText }}</a
             >
-            <div class="btn-group" v-show="btnType === 3">
+            <div class="btn-group" v-if="btnType === '3'">
               <a href="javascript:;" class="btn" v-on:click="$emit('submit')">{{
                 sureText
               }}</a>

@@ -6,13 +6,16 @@
           <span>欢迎访问Q宠商城！</span>
         </div>
         <ul class="topbar-user">
-          <li v-show="userInfo.id">{{ userInfo.user_name }}</li>
-          <li v-show="userInfo.id">退出</li>
-          <li @click="switchTo('/login')" v-show="!userInfo.id">登录</li>
-          <li @click="switchTo('/')" v-show="userInfo.id">我的订单</li>
+          <li v-if="userInfo.id">
+            您好，{{ userInfo.user_phone | phoneFormat }}
+          </li>
+          <li @click="switchTo('/login')" v-if="!userInfo.id">登录</li>
           <li @click="switchTo('/shoppingcart')">购物车</li>
-          <!-- <li @click="switchTo('/me')">个人中心</li> -->
-          <!-- <li @click="switchTo('/manager')">管理员通道</li> -->
+          <li @click="switchTo('/me')">我的订单</li>
+          <li @click="switchTo('/manager')">管理员通道</li>
+          <li v-if="userInfo.id" class="signup" @click="dealLogout">
+            退出登录
+          </li>
         </ul>
       </div>
     </div>
@@ -46,7 +49,8 @@
 
 <script>
 import Logo from "./Logo";
-import { mapState } from "vuex";
+import { Message, MessageBox } from "element-ui";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "nav-header",
   components: { Logo },
@@ -58,16 +62,55 @@ export default {
   computed: {
     ...mapState(["userInfo"])
   },
+  filters: {
+    phoneFormat(phone) {
+      //1.转成数组
+      let phoneArr = [...phone];
+      //2.遍历
+      let str = "";
+      phoneArr.forEach((item, index) => {
+        if (index === 3 || index === 4 || index === 5 || index === 6) {
+          str += "*";
+        } else {
+          str += item;
+        }
+      });
+      return str;
+    }
+  },
   mounted() {},
   methods: {
+    ...mapActions(["logout"]),
     switchTo(path) {
-      this.$router.replace(path);
+      if (this.userInfo.id) {
+        //已经登录
+        this.$router.replace(path);
+      } else {
+        // Message.warning("请先登录");
+        this.$router.replace("login");
+      }
+    },
+    dealLogout() {
+      MessageBox.confirm("已登录，确定要退出登录吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(actions => {
+          // console.log(actions);
+          this.logout({});
+          Message.success("退出登录成功！");
+        })
+        .catch(() => {
+          Message("已取消退出登录！");
+        });
     }
   }
 };
 </script>
 
 <style lang="stylus">
+
 .nav-topbar
   height 32px
   line-height 32px
@@ -81,10 +124,14 @@ export default {
     .topbar-user
         display flex
         li
-            padding 0 17px
+            padding 0 16px
+            cursor pointer
+            border-right 1px solid #e1e1e1
             &:hover
-                cursor pointer
                 color #20bfa9
+                background #e1e1e1
+            &.signup:hover
+                color red
 .nav-header
   background #fff
   margin-bottom 10px

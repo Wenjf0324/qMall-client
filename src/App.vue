@@ -12,6 +12,7 @@ import Footer from "./components/Footer";
 import storage from "./storage/index";
 export default {
   name: "App",
+  //拉取用户信息
   created() {
     this.$store.dispatch("getUserInfo");
   },

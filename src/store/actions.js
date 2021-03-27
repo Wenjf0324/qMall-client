@@ -11,7 +11,8 @@ import {
   getCatDailyList,
   getCatHealthList,
   getCatToyList,
-  getUserInfo
+  getUserInfo,
+  getLogout
 } from "../api";
 
 import {
@@ -27,7 +28,8 @@ import {
   CAT_DAILY_LIST,
   CAT_HEALTH_LIST,
   CAT_TOY_LIST,
-  USER_INFO
+  USER_INFO,
+  RESET_USER_INFO
 } from "./mutation-types";
 
 export default {
@@ -114,6 +116,15 @@ export default {
     console.log(result);
     if (result.success_code === 200) {
       commit(USER_INFO, { userInfo: result.message });
+    }
+  },
+
+  //退出登录（清空获取用户信息）
+  async logout({ commit }) {
+    const result = await getLogout();
+    console.log(result);
+    if (result.success_code === 200) {
+      commit(RESET_USER_INFO);
     }
   }
 };

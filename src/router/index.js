@@ -130,7 +130,7 @@ export default new VueRouter({
     {
       path: "/me",
       component: Me,
-      meta: { showNavHeader: true }
+      meta: { showNavHeader: false }
     },
     {
       path: "/manager",

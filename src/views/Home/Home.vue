@@ -30,7 +30,10 @@
           <p>Hi~ 欢迎来到Q宠商城！</p>
           <ul>
             <li @click="switchTo('/login')">登录</li>
-            <li>注册</li>
+            <li @click="switchTo('/me')">个人中心</li>
+            <li @click="switchTo('/me')" v-if="userInfo.id" class="signup">
+              退出登录
+            </li>
           </ul>
         </div>
       </div>
@@ -59,7 +62,8 @@ export default {
   },
   components: { BannerNavHome, DogShopList, CatShopList },
   computed: {
-    ...mapState(["homecasual"])
+    ...mapState(["homecasual"]),
+    ...mapState(["userInfo"])
   },
   mounted() {
     //1.请求轮播图的数据
@@ -115,29 +119,36 @@ export default {
                 background #fff
                 position relative
                 .logo
+
                     font-size 48px
-                    margin-top 56px
+                    margin-top 60px
                     position absolute
                     left 50%
                     top 0
                     transform translateX(-50%)
                 p
-                    margin-top 150px
+                    margin-top 155px
                     text-align center
                 ul
                     margin-top 40px
                     padding 0 48px
-                    font-size 14px
+                    font-size 13px
                     li
                         border: 1px solid #333
                         text-align center
-                        padding 8px
+                        padding 10px
                         margin-bottom 32px
-                        border-radius 8px
+                        border-radius 16px
+                        cursor pointer
                         &:hover
-                            cursor pointer
                             border 1px solid #20bfa9
-                            color #20bfa9
+                            // color #20bfa9
+                            background #20bfa9
+                            color #fff
+                        &.signup:hover
+                            border 1px solid red
+                            background red
+                            color #fff
     .pruduct-box
       margin-top 40px
 </style>

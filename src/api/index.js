@@ -55,3 +55,6 @@ export const pwdLogin = (name, pwd, captcha) =>
 
 //2.13获取登录的用户名信息
 export const getUserInfo = () => ajax(BASE_URL + "/api/user_info");
+
+//2.14退出登录
+export const getLogout = () => ajax(BASE_URL + "/api/logout");

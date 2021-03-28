@@ -24,78 +24,29 @@
             <li>操作</li>
           </ul>
           <ul class="cart-item-list">
-            <li class="cart-item">
+            <li
+              class="cart-item"
+              v-for="(item, index) in cartgoods"
+              :key="index"
+            >
               <div class="item-check">
                 <span class="checkbox checked"></span>
               </div>
               <div class="item-name">
-                <img
-                  src="../../assets/images/shop_list/dog/goods1.jpg"
-                  alt=""
-                />
-                <span>宝路 Pedigree 中小型成犬粮牛肉肝蔬菜及谷物狗粮7.5kg</span>
+                <img v-lazy="item.thumb_url" width="100%" />
+                <span>{{ item.goods_name }}</span>
               </div>
-              <div class="item-price">149.0</div>
+              <div class="item-price">{{ item.price / 100 }}</div>
               <div class="item-num">
                 <div class="num-box">
                   <a href="javascript:;">-</a>
-                  <span>1</span>
+                  <input type="text" value="1" v-model="item.buy_count" />
                   <a href="javascript:;">+</a>
                 </div>
               </div>
-              <div class="item-total">149.0</div>
-              <div class="item-del">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-close"></use>
-                </svg>
+              <div class="item-total">
+                {{ (item.price / 100) * item.buy_count }}
               </div>
-            </li>
-            <li class="cart-item">
-              <div class="item-check">
-                <span class="checkbox checked"></span>
-              </div>
-              <div class="item-name">
-                <img
-                  src="../../assets/images/shop_list/dog/goods1.jpg"
-                  alt=""
-                />
-                <span>宝路 Pedigree 中小型成犬粮牛肉肝蔬菜及谷物狗粮7.5kg</span>
-              </div>
-              <div class="item-price">149.0</div>
-              <div class="item-num">
-                <div class="num-box">
-                  <a href="javascript:;">-</a>
-                  <span>1</span>
-                  <a href="javascript:;">+</a>
-                </div>
-              </div>
-              <div class="item-total">149.0</div>
-              <div class="item-del">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-close"></use>
-                </svg>
-              </div>
-            </li>
-            <li class="cart-item">
-              <div class="item-check">
-                <span class="checkbox checked"></span>
-              </div>
-              <div class="item-name">
-                <img
-                  src="../../assets/images/shop_list/dog/goods1.jpg"
-                  alt=""
-                />
-                <span>宝路 Pedigree 中小型成犬粮牛肉肝蔬菜及谷物狗粮7.5kg</span>
-              </div>
-              <div class="item-price">149.0</div>
-              <div class="item-num">
-                <div class="num-box">
-                  <a href="javascript:;">-</a>
-                  <span>1</span>
-                  <a href="javascript:;">+</a>
-                </div>
-              </div>
-              <div class="item-total">149.0</div>
               <div class="item-del">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-close"></use>
@@ -122,10 +73,19 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import OrderHeader from "../../components/OrderHeader.vue";
 import OrderFooter from "../../components/OrderFooter.vue";
+
 export default {
-  components: { OrderHeader, OrderFooter }
+  components: { OrderHeader, OrderFooter },
+  computed: {
+    ...mapState(["cartgoods"])
+  },
+  mounted() {
+    //请求商品数据
+    this.$store.dispatch("reqCartGoods");
+  }
 };
 </script>
 
@@ -215,6 +175,12 @@ export default {
                                 font-size 14px
                                 a
                                     width 50px
+                                input
+                                  width 50px
+                                  text-align center
+                                  border none
+                                  color #333
+
                         .item-total
                             color #f60
                         .item-del > .icon

@@ -27,5 +27,7 @@ export default {
   cattoylist: [],
 
   //用户数据
-  userInfo: {}
+  userInfo: {},
+  //购物车数据
+  cartgoods: []
 };

@@ -12,7 +12,8 @@ import {
   getCatHealthList,
   getCatToyList,
   getUserInfo,
-  getLogout
+  getLogout,
+  getCartGoods
 } from "../api";
 
 import {
@@ -29,7 +30,8 @@ import {
   CAT_HEALTH_LIST,
   CAT_TOY_LIST,
   USER_INFO,
-  RESET_USER_INFO
+  RESET_USER_INFO,
+  CART_GOODS_LIST
 } from "./mutation-types";
 
 export default {
@@ -125,6 +127,14 @@ export default {
     console.log(result);
     if (result.success_code === 200) {
       commit(RESET_USER_INFO);
+    }
+  },
+
+  //请求购物车数据
+  async reqCartGoods({ commit }) {
+    const result = await getCartGoods();
+    if (result.success_code === 200) {
+      commit(CART_GOODS_LIST, { cartgoods: result.message });
     }
   }
 };

@@ -106,7 +106,6 @@ export default {
     },
     showMenu(flag) {
       this.show_menu = flag;
-      console.log("click");
     }
   }
 };

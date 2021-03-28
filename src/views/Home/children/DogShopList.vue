@@ -5,6 +5,7 @@
       title="狗狗专区"
       :menu_nav="menu_nav"
       :shop_list="dog_list"
+      :clickCellBtn="dealWithCellBtnClick"
     />
   </div>
 </template>
@@ -70,6 +71,9 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    dealWithCellBtnClick() {}
   }
 };
 </script>

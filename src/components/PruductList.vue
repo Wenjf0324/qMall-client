@@ -31,7 +31,8 @@
             <span class="item-price"
               >{{ (item.price / 100) | currency() }}
             </span>
-            <svg class="icon" aria-hidden="true" @click="addCart">
+            <!-- 加入购物车 -->
+            <svg class="icon" aria-hidden="true" @click="addCart(item)">
               <use xlink:href="#icon-cart2"></use>
             </svg>
           </div>
@@ -68,7 +69,11 @@ export default {
     title_icon: String,
     title: String,
     menu_nav: Array,
-    shop_list: Array
+    shop_list: Array,
+    clickCellBtn: {
+      type: Function,
+      default: () => {}
+    }
   },
   //过滤器
   filters: {
@@ -81,10 +86,10 @@ export default {
     switchTo(path) {
       this.$router.replace(path);
     },
-    addCart() {
+    addCart(goods) {
       this.showModal = true;
       //将数据添加到购物车
-
+      console.log(goods);
       //
     },
     goToCart() {

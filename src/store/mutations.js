@@ -12,7 +12,8 @@ import {
   CAT_HEALTH_LIST,
   CAT_TOY_LIST,
   USER_INFO,
-  RESET_USER_INFO
+  RESET_USER_INFO,
+  CART_GOODS_LIST
 } from "./mutation-types";
 
 export default {
@@ -70,5 +71,9 @@ export default {
 
   [RESET_USER_INFO](state) {
     state.userInfo = {};
+  },
+
+  [CART_GOODS_LIST](state, { cartgoods }) {
+    state.cartgoods = cartgoods;
   }
 };

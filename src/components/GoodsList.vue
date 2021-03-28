@@ -12,7 +12,7 @@
         </p>
         <div class="shop-list-bottom">
           <span class="item-price">{{ (item.price / 100) | currency() }} </span>
-          <svg class="icon" aria-hidden="true" @click="addCart">
+          <svg class="icon" aria-hidden="true" @click="addCart(item)">
             <use xlink:href="#icon-cart2"></use>
           </svg>
         </div>
@@ -36,6 +36,9 @@
 
 <script>
 import Modal from "./Modal";
+import { addGoodsToCart } from "../api/index";
+import { mapState } from "vuex";
+import { Message } from "element-ui";
 export default {
   components: { Modal },
   props: {
@@ -45,6 +48,9 @@ export default {
     return {
       showModal: false
     };
+  },
+  computed: {
+    ...mapState(["userInfo"])
   },
   //过滤器
   filters: {
@@ -57,11 +63,24 @@ export default {
     switchTo(path) {
       this.$router.replace(path);
     },
-    addCart() {
-      this.showModal = true;
-      //将数据添加到购物车
+    async addCart(goods) {
+      //console.log(goods);
 
-      //
+      //1.发送请求
+      //user_id,goods_id,goods_name,thumb_url,price
+      let result = await addGoodsToCart(
+        this.userInfo.id,
+        goods.goods_id,
+        goods.goods_name,
+        goods.img_url,
+        goods.price
+      );
+      console.log(result);
+      if (!this.userInfo.id) {
+        Message.error("请先登录");
+      } else if (result) {
+        this.showModal = true;
+      }
     },
     goToCart() {
       this.$router.push("/shoppingcart");

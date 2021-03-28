@@ -12,3 +12,4 @@ export const CAT_HEALTH_LIST = "cat_health_list"; //猫咪医疗数据
 export const CAT_TOY_LIST = "cat_toy_list"; //猫咪玩具数据
 export const USER_INFO = "user_info"; //同步用户信息
 export const RESET_USER_INFO = "reset_user_info"; //清空用户信息
+export const CART_GOODS_LIST = "cart_goods_list"; //购物车数据

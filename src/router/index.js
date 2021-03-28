@@ -44,25 +44,52 @@ export default new VueRouter({
     {
       path: "/home",
       component: Home,
-      meta: { showNavHeader: true }
+      meta: { showNavHeader: true, showFooter: true }
     },
     {
       path: "/dog",
       component: Dog,
       children: [
-        { path: "food", component: DogFood, meta: { showNavHeader: true } },
+        {
+          path: "food",
+          component: DogFood,
+          meta: {
+            showNavHeader: true,
+            showFooter: true
+          }
+        },
         {
           path: "snacks",
           component: DogSnacks,
-          meta: { showNavHeader: true }
+          meta: {
+            showNavHeader: true,
+            showFooter: true
+          }
         },
-        { path: "daily", component: DogDaily, meta: { showNavHeader: true } },
+        {
+          path: "daily",
+          component: DogDaily,
+          meta: {
+            showNavHeader: true,
+            showFooter: true
+          }
+        },
         {
           path: "health",
           component: DogHealth,
-          meta: { showNavHeader: true }
+          meta: {
+            showNavHeader: true,
+            showFooter: true
+          }
         },
-        { path: "toy", component: DogToy, meta: { showNavHeader: true } },
+        {
+          path: "toy",
+          component: DogToy,
+          meta: {
+            showNavHeader: true,
+            showFooter: true
+          }
+        },
         { path: "/", redirect: "/dog/food" }
       ]
     },
@@ -70,31 +97,58 @@ export default new VueRouter({
       path: "/cat",
       component: Cat,
       children: [
-        { path: "food", component: CatFood, meta: { showNavHeader: true } },
+        {
+          path: "food",
+          component: CatFood,
+          meta: {
+            showNavHeader: true,
+            showFooter: true
+          }
+        },
         {
           path: "snacks",
           component: CatSnacks,
-          meta: { showNavHeader: true }
+          meta: {
+            showNavHeader: true,
+            showFooter: true
+          }
         },
-        { path: "daily", component: CatDaily, meta: { showNavHeader: true } },
+        {
+          path: "daily",
+          component: CatDaily,
+          meta: {
+            showNavHeader: true,
+            showFooter: true
+          }
+        },
         {
           path: "health",
           component: CatHealth,
-          meta: { showNavHeader: true }
+          meta: {
+            showNavHeader: true,
+            showFooter: true
+          }
         },
-        { path: "toy", component: CatToy, meta: { showNavHeader: true } },
+        {
+          path: "toy",
+          component: CatToy,
+          meta: {
+            showNavHeader: true,
+            showFooter: true
+          }
+        },
         { path: "/", redirect: "/cat/food" }
       ]
     },
     {
-      path: "/detail/:id",
+      path: "/detail",
       component: Detail,
-      meta: { showNavHeader: true }
+      meta: { showNavHeader: true, showFooter: true }
     },
     {
       path: "/shoppingcart",
       component: ShoppingCart,
-      meta: { showNavHeader: false }
+      meta: { showNavHeader: false, showFooter: false }
     },
     {
       path: "/order",
@@ -105,19 +159,19 @@ export default new VueRouter({
           path: "list",
           name: "order-list",
           component: OrderList,
-          meta: { showNavHeader: false }
+          meta: { showNavHeader: false, showFooter: false }
         },
         {
           path: "confirm",
           name: "order-confirm",
           component: OrderConfirm,
-          meta: { showNavHeader: false }
+          meta: { showNavHeader: false, showFooter: false }
         },
         {
           path: "pay",
           name: "order-pay",
           component: OrderPay,
-          meta: { showNavHeader: false }
+          meta: { showNavHeader: false, showFooter: false }
         }
       ]
     },
@@ -125,17 +179,17 @@ export default new VueRouter({
     {
       path: "/login",
       component: Login,
-      meta: { showNavHeader: false }
+      meta: { showNavHeader: false, showFooter: true }
     },
     {
       path: "/me",
       component: Me,
-      meta: { showNavHeader: false }
+      meta: { showNavHeader: false, showFooter: true }
     },
     {
       path: "/manager",
       component: Manager,
-      meta: { showNavHeader: true }
+      meta: { showNavHeader: true, showFooter: true }
     },
     {
       path: "/",

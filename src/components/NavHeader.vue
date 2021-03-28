@@ -7,7 +7,7 @@
         </div>
         <ul class="topbar-user">
           <li v-if="userInfo.id">
-            您好，{{ userInfo.user_phone | phoneFormat }}
+            您好，{{ userInfo.user_name || userInfo.user_phone | phoneFormat }}
           </li>
           <li @click="switchTo('/login')" v-if="!userInfo.id">登录</li>
           <li @click="switchTo('/shoppingcart')">购物车</li>

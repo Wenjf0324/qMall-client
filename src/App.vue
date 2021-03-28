@@ -2,7 +2,7 @@
   <div id="app">
     <nav-header v-show="$route.meta.showNavHeader" />
     <router-view></router-view>
-    <Footer />
+    <Footer v-show="$route.meta.showFooter" />
   </div>
 </template>
 
@@ -33,7 +33,7 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 // @import '../static/css/reset.scss'
 #app
     width 100%

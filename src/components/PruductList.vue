@@ -19,8 +19,14 @@
           v-for="(item, index) in shop_list"
           :key="index"
         >
-          <img v-lazy="item.img_url" alt="" width="100%" />
-          <p class="list-item-title">{{ item.goods_name }}</p>
+          <img
+            @click="switchTo('/detail')"
+            v-lazy="item.img_url"
+            width="100%"
+          />
+          <p @click="switchTo('/detail')" class="list-item-title">
+            {{ item.goods_name }}
+          </p>
           <div class="shop-list-bottom">
             <span class="item-price"
               >{{ (item.price / 100) | currency() }}
@@ -72,6 +78,9 @@ export default {
     }
   },
   methods: {
+    switchTo(path) {
+      this.$router.replace(path);
+    },
     addCart() {
       this.showModal = true;
       //将数据添加到购物车
@@ -118,8 +127,9 @@ export default {
           padding 8px
           border 1px solid #e7e7e7
           background #fff
-          cursor pointer
           transition all 0.2s linear
+          img, p
+            cursor pointer
           &:hover
             transform translateY(-2px)
             box-shadow 0 0 5px 3px rgba(0,0,0,.1)
@@ -142,4 +152,6 @@ export default {
               font-size 18px
               margin-left 4px
               cursor pointer
+              &:hover
+                transform translateX(1px)
 </style>

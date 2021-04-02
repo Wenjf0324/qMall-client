@@ -2,7 +2,10 @@
   <div class="order-header">
     <div class="container">
       <Logo />
-      <h1>{{ title }}</h1>
+      <div class="title">
+        <h1>{{ title }}</h1>
+        <slot name="tip"></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -10,6 +13,7 @@
 <script>
 import Logo from "./Logo";
 export default {
+  name: "order-header",
   components: {
     Logo
   },
@@ -27,9 +31,8 @@ export default {
     .container
         height inherit
         position relative
-        h1
+        .title
             height 50px
-            font-size 28px
             line-height 50px
             color #333
             padding-left 24px
@@ -38,4 +41,12 @@ export default {
             top 50%
             left 180px
             transform translateY(-50%)
+            h1
+              font-size 28px
+              display inline-block
+            span
+              font-size 14px
+              margin-left 17px
+              color #999
+              font-weight 200
 </style>

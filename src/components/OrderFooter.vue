@@ -30,7 +30,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "order-footer"
+};
 </script>
 
 <style lang="stylus">

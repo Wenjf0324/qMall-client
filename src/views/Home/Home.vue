@@ -31,9 +31,6 @@
           <ul>
             <li @click="switchTo('/login')">登录</li>
             <li @click="switchTo('/me')">个人中心</li>
-            <li @click="switchTo('/me')" v-if="userInfo.id" class="signup">
-              退出登录
-            </li>
           </ul>
         </div>
       </div>

@@ -6,12 +6,19 @@
         v-for="(item, index) in goodslist"
         :key="index"
       >
-        <img @click="switchTo('/detail')" v-lazy="item.img_url" width="100%" />
-        <p @click="switchTo('/detail')" class="list-item-title">
+        <img
+          @click="getGoodsInfoAndSwitchTo(item, `/detail/${item.goods_id}`)"
+          v-lazy="item.img_url"
+          width="100%"
+        />
+        <p
+          @click="switchTo(`/detail/${item.goods_id}`)"
+          class="list-item-title"
+        >
           {{ item.goods_name }}
         </p>
         <div class="shop-list-bottom">
-          <span class="item-price">{{ (item.price / 100) | currency() }} </span>
+          <span class="item-price">{{ item.price | currency() }} </span>
           <svg class="icon" aria-hidden="true" @click="addCart(item)">
             <use xlink:href="#icon-cart2"></use>
           </svg>
@@ -38,7 +45,7 @@
 import Modal from "./Modal";
 import { addGoodsToCart } from "../api/index";
 import { mapState } from "vuex";
-import { Message } from "element-ui";
+import { Message, MessageBox } from "element-ui";
 export default {
   components: { Modal },
   props: {
@@ -56,10 +63,14 @@ export default {
   filters: {
     currency(val) {
       if (!val) return "0.00";
-      return "￥" + val.toFixed(2);
+      return "￥" + Number(val).toFixed(2);
     }
   },
   methods: {
+    getGoodsInfoAndSwitchTo(singlegoods, path) {
+      this.$router.replace(path);
+      this.$store.dispatch("getGoodsSingle", { singlegoods });
+    },
     switchTo(path) {
       this.$router.replace(path);
     },
@@ -77,13 +88,19 @@ export default {
       );
       console.log(result);
       if (!this.userInfo.id) {
-        Message.error("请先登录");
+        // Message.error("请先登录");
+        MessageBox.confirm("请先登录", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "error"
+        });
       } else if (result) {
         this.showModal = true;
       }
     },
     goToCart() {
       this.$router.push("/shoppingcart");
+      this.showModal = fasle;
     }
   }
 };

@@ -13,7 +13,9 @@ import {
   getCatToyList,
   getUserInfo,
   getLogout,
-  getCartGoods
+  getCartGoods,
+  getShippingsList,
+  delAddressSingle
 } from "../api";
 
 import {
@@ -31,7 +33,16 @@ import {
   CAT_TOY_LIST,
   USER_INFO,
   RESET_USER_INFO,
-  CART_GOODS_LIST
+  CART_GOODS_LIST,
+  ADD_GOODS_COUNT,
+  REDUCE_GOODS_COUNT,
+  SELECTED_ALL_GOODS,
+  SELECTED_SINGER_GOODS,
+  DEL_SINGER_GOODS,
+  GET_SINGLE_GOODS,
+  CART_COUNT,
+  SHIPPINGS_LIST,
+  DEL_SINGLE_ADDRESS
 } from "./mutation-types";
 
 export default {
@@ -136,5 +147,54 @@ export default {
     if (result.success_code === 200) {
       commit(CART_GOODS_LIST, { cartgoods: result.message });
     }
+  },
+
+  //单个商品的增加和减少
+  updateGoodsCount({ commit }, { goods, isAdd }) {
+    if (isAdd) {
+      //增加
+      commit(ADD_GOODS_COUNT, { goods });
+    } else {
+      //减少
+      commit(REDUCE_GOODS_COUNT, { goods });
+    }
+  },
+
+  //是否选中所有的商品
+  selectedAll({ commit }, { isSelected }) {
+    commit(SELECTED_ALL_GOODS, { isSelected });
+  },
+
+  //单个商品的选中和取消
+  singerGoodsSelected({ commit }, { goods }) {
+    commit(SELECTED_SINGER_GOODS, { goods });
+  },
+
+  //单个商品的删除
+  delGoodsSinger({ commit }, { goods }) {
+    commit(DEL_SINGER_GOODS, { goods });
+  },
+
+  //获取单个商品的数据，用于商品详情页的展示
+  getGoodsSingle({ commit }, { singlegoods }) {
+    commit(GET_SINGLE_GOODS, { singlegoods });
+  },
+
+  //购物车总数量
+  saveCartCount({ commit }, { cartCount }) {
+    commit(CART_COUNT, { cartCount });
+  },
+
+  //请求收货地址列表数据
+  async reqShippingsList({ commit }) {
+    const result = await getShippingsList();
+    if (result.success_code === 200) {
+      commit(SHIPPINGS_LIST, { shippingslist: result.message });
+    }
+  },
+
+  //单个收货地址的删除
+  async delAddressSingle({ commit }, { shippingsItem }) {
+    commit(DEL_SINGLE_ADDRESS, { shippingsItem });
   }
 };

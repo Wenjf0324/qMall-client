@@ -242,7 +242,7 @@ export default {
         }
         //5.3手机验证码登录
         const result = await phoneCodeLogin(this.phone, this.code);
-        console.log(result);
+        // console.log(result);
         if (result.success_code === 200) {
           this.userInfo = result.message;
         } else {
@@ -265,7 +265,7 @@ export default {
         }
         //5.5用户名和密码的登录
         const result = await pwdLogin(this.user_name, this.pwd, this.captcha);
-        console.log(result);
+        // console.log(result);
         if (result.success_code === 200) {
           this.userInfo = result.message;
         } else {

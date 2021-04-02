@@ -6,44 +6,46 @@
         <div class="intro">
           <div class="img-box">
             <div class="big-img">
-              <img
-                src="../assets/images/shop_list/cat/goods1.jpg"
-                width="100%"
-              />
+              <ul class="bigimg-list">
+                <li v-for="(item, index) in singlegoods.img_list" :key="index">
+                  <img
+                    v-lazy="item"
+                    width="100%"
+                    v-show="currentIndex === index"
+                  />
+                </li>
+              </ul>
             </div>
             <div class="small-img">
               <div class="prebtn"></div>
               <div class="nextbtn"></div>
               <ul class="smallImg-list">
-                <li class="smallImg-item">
-                  <img
-                    src="../assets/images/shop_list/cat/goods1.jpg"
-                    width="100%"
-                  />
-                </li>
-                <li class="smallImg-item">
-                  <img
-                    src="../assets/images/shop_list/cat/goods1.jpg"
-                    width="100%"
-                  />
-                </li>
-                <li class="smallImg-item">
-                  <img
-                    src="../assets/images/shop_list/cat/goods1.jpg"
-                    width="100%"
-                  />
+                <li
+                  class="smallImg-item"
+                  :class="{ selected: checkIndex === index }"
+                  v-for="(item, index) in singlegoods.img_list"
+                  :key="index"
+                  @click.stop="shouImg(index)"
+                >
+                  <img v-lazy="item" width="100%" />
                 </li>
               </ul>
             </div>
           </div>
 
           <div class="summary">
-            <h1>牛肉肝蔬菜及谷物狗粮7.5kg</h1>
-            <div class="price"><span>￥149.0</span></div>
+            <h1>{{ singlegoods.goods_name }}</h1>
+            <div class="price">
+              <span>{{ singlegoods.price | currency() }}</span>
+            </div>
             <div class="description">
-              <p><span class="sumTit">品牌：</span>宝路</p>
-              <p><span class="sumTit">产品规格：</span>7.5kg</p>
-              <p><span class="sumTit">适用犬类：</span>中小型犬成犬</p>
+              <p><span class="sumTit">品牌：</span>{{ singlegoods.brand }}</p>
+              <p>
+                <span class="sumTit">产品规格：</span>{{ singlegoods.weight }}
+              </p>
+              <p>
+                <span class="sumTit">适用犬类：</span>{{ singlegoods.object }}
+              </p>
               <p>
                 <span class="sumTit">购买数量：</span>
                 <span class="number">-</span>
@@ -52,8 +54,11 @@
               </p>
             </div>
             <div class="buy">
-              <router-link to="/detail">立即购买</router-link>
-              <router-link to="/detail">加入购物车</router-link>
+              <router-link to="/order/confirm">立即购买</router-link>
+              <!-- <router-link to="/shoppingcart" @click="addCart(singlegoods)"
+                >加入购物车</router-link
+              > -->
+              <button @click="addCart(singlegoods)">加入购物车</button>
             </div>
             <div class="collection">
               <svg class="icon" aria-hidden="true">
@@ -78,7 +83,7 @@
           </ul>
           <div class="details-content">
             <img
-              src="../assets/images/shop_list/dog/goods1-4.jpg"
+              v-lazy="singlegoods.detail_img"
               width="100%"
               class="details-item"
               :class="{ current: detailsType }"
@@ -126,23 +131,92 @@
         </ul>
       </div>
     </div>
+    <modal
+      title="提示"
+      sureText="查看购物车"
+      btnType="1"
+      modalType="middle"
+      :showModal="showModal"
+      v-on:submit="goToCart"
+      v-on:cancel="showModal = false"
+    >
+      <template v-slot:body>
+        <p>商品添加成功！</p>
+      </template>
+    </modal>
   </div>
 </template>
 
 <script>
+import Modal from "../components/Modal";
 import BannerNavOther from "../components/BannerNav/BannerNavOther.vue";
+import { addGoodsToCart } from "../api/index";
+import { mapState } from "vuex";
+import { Message, MessageBox } from "element-ui";
 export default {
   components: {
-    BannerNavOther
+    BannerNavOther,
+    Modal
+  },
+  props: {
+    goods: Array
   },
   data() {
     return {
-      detailsType: true //true 详细信息，false 用户评价
+      currentIndex: 0, //当前展示的图片
+      checkIndex: 0, //选中的图片
+      detailsType: true, //true 详细信息，false 用户评价
+      showModal: false
     };
   },
+  computed: {
+    ...mapState(["userInfo", "singlegoods"])
+    // goodsInfo() {
+    //   return this.$store.state.singlegoods;
+    // }
+  },
   methods: {
+    shouImg(index) {
+      this.checkIndex = index;
+      this.currentIndex = index;
+      console.log(this.checkIndex);
+      console.log(this.currentIndex);
+    },
     changeDetails(flag) {
       this.detailsType = flag;
+    },
+    async addCart(goods) {
+      //1.发送请求
+      //user_id,goods_id,goods_name,thumb_url,price
+      let result = await addGoodsToCart(
+        this.userInfo.id,
+        goods.goods_id,
+        goods.goods_name,
+        goods.img_url,
+        goods.price
+      );
+      console.log(result);
+      if (!this.userInfo.id) {
+        MessageBox.confirm("请先登录", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "error"
+        });
+      } else if (result) {
+        console.log("添加成功");
+        this.showModal = true;
+      }
+    },
+    goToCart() {
+      this.$router.push("/shoppingcart");
+      this.showModal = false;
+    }
+  },
+  //过滤器
+  filters: {
+    currency(val) {
+      if (!val) return "0.00";
+      return "￥" + Number(val).toFixed(2);
     }
   }
 };
@@ -165,8 +239,11 @@ export default {
         .img-box
           width 375px
           .big-img
+            height 375px
             border 1px solid #e1e1e1
             margin-bottom 12px
+            img
+              vertical-align top
           .small-img
             overflow hidden
             .smallImg-list
@@ -174,8 +251,11 @@ export default {
               li
                 border 1px solid #e1e1e1
                 margin-right 6px
+              .selected
+                border 1px solid #ed462f
             img
               width 64px
+              vertical-align top
         .summary
           width 420px
           margin 6px 0 0 50px
@@ -183,6 +263,7 @@ export default {
             font-weight normal
             font-size 22px
             color #333
+            line-height 1.3em
           .price
             width 100%
             color #ed462f
@@ -220,6 +301,21 @@ export default {
               &:last-child
                 border 1px solid #f60
                 color #f60
+            button
+                width: 130px;
+                text-align: center;
+                padding: 12px 0;
+                margin-right 8px
+                display inline-block
+                background #fff
+                &:focus
+                  outline none
+                &:first-child
+                  background #000
+                  color: #fff;
+                &:last-child
+                  border 1px solid #f60
+                  color #f60
           .collection
             color #666
             font-size 14px

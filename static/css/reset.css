@@ -144,3 +144,6 @@ table {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+* {
+  box-sizing: border-box;
+}

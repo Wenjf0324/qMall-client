@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <nav-header v-show="$route.meta.showNavHeader" />
-    <router-view></router-view>
+
+    <!-- 缓存路由对象数据，购物车保持刷新 -->
+    <keep-alive exclude="shoppingCart,orderConfirm">
+      <router-view></router-view>
+    </keep-alive>
+
     <Footer v-show="$route.meta.showFooter" />
   </div>
 </template>

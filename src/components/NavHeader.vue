@@ -12,7 +12,7 @@
           <li @click="switchTo('/login')" v-if="!userInfo.id">登录</li>
           <li @click="switchTo('/shoppingcart')">购物车</li>
           <li @click="switchTo('/me')">我的订单</li>
-          <li @click="switchTo('/manager')">管理员通道</li>
+          <!-- <li @click="switchTo('/manager')">管理员通道</li> -->
           <li v-if="userInfo.id" class="signup" @click="dealLogout">
             退出登录
           </li>
@@ -40,7 +40,8 @@
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-gouwuche"></use>
           </svg>
-          购物车(<span>0</span>)
+          购物车(<span>{{ cartCount }}</span
+          >)
         </div>
       </div>
     </div>
@@ -60,7 +61,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(["userInfo"])
+    ...mapState(["userInfo", "cartgoods"]),
+    cartCount() {
+      return this.cartgoods.length;
+    }
   },
   filters: {
     phoneFormat(phone) {
@@ -78,7 +82,6 @@ export default {
       return str;
     }
   },
-  mounted() {},
   methods: {
     ...mapActions(["logout"]),
     switchTo(path) {
@@ -87,7 +90,7 @@ export default {
         this.$router.replace(path);
       } else {
         // Message.warning("请先登录");
-        this.$router.replace("login");
+        this.$router.replace("/login");
       }
     },
     dealLogout() {

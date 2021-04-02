@@ -29,5 +29,12 @@ export default {
   //用户数据
   userInfo: {},
   //购物车数据
-  cartgoods: []
+  cartgoods: [],
+  //收货地址数据
+  shippingslist: [],
+
+  //单个商品的数据
+  singlegoods: {},
+  //购物车的数量
+  cartCount: 0
 };

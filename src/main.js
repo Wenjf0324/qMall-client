@@ -5,16 +5,17 @@ import router from "./router/index";
 import store from "./store";
 import axios from "axios";
 import VueLazyLoad from "vue-lazyload";
+import loading from "./assets/images/loading/loading.png";
 
 //mock开关
-const mock = true;
-if (mock) {
-  require("./mock/api");
-}
+// const mock = true;
+// if (mock) {
+//   require("./mock/api");
+// }
 
 //根据前端的跨域方式做调整
 // axios.defaults.baseURL = "/api";
-axios.defaults.timeout = 8000;
+// axios.defaults.timeout = 8000;
 
 // //接口错误拦截
 // axios.interceptors.response.use(function(response) {
@@ -33,7 +34,7 @@ axios.defaults.timeout = 8000;
 Vue.prototype.axios = axios;
 
 Vue.use(VueLazyLoad, {
-  loading: "./assets/images/loading-svg/loading-bars.svg"
+  loading
 });
 
 Vue.config.productionTip = false;

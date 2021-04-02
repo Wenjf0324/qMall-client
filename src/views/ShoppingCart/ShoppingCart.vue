@@ -16,39 +16,68 @@
         </div>
         <div class="cart-box">
           <ul class="cart-item-head">
-            <li><span class="checkbox checked"></span> 全选</li>
+            <li>
+              <span
+                class="checkbox"
+                :class="{ checked: isSelectedAll }"
+                @click.stop="selectedAll(isSelectedAll)"
+              ></span>
+              全选
+            </li>
             <li>商品名称</li>
             <li>单价(元)</li>
             <li>数量</li>
             <li>小计(元)</li>
             <li>操作</li>
           </ul>
-          <ul class="cart-item-list">
+          <!-- 遍历购物车数组 -->
+          <ul class="cart-item-list" v-if="cartgoods.length > 0">
             <li
               class="cart-item"
               v-for="(item, index) in cartgoods"
               :key="index"
             >
+              <!-- 是否选中 -->
               <div class="item-check">
-                <span class="checkbox checked"></span>
+                <span
+                  class="checkbox"
+                  :class="{ checked: item.checked }"
+                  @click.stop="singerGoodsSelected(item)"
+                ></span>
               </div>
+              <!-- 商品名称 -->
               <div class="item-name">
                 <img v-lazy="item.thumb_url" width="100%" />
                 <span>{{ item.goods_name }}</span>
               </div>
-              <div class="item-price">{{ item.price / 100 }}</div>
+              <!-- 单价 -->
+              <div class="item-price">
+                {{ item.price | moneyFormat() }}
+              </div>
+              <!-- 数量 -->
               <div class="item-num">
                 <div class="num-box">
-                  <a href="javascript:;">-</a>
-                  <input type="text" value="1" v-model="item.buy_count" />
-                  <a href="javascript:;">+</a>
+                  <span @click.stop="updateGoodsCount(item, false)">-</span>
+                  <input
+                    type="text"
+                    value="1"
+                    v-model="item.buy_count"
+                    disabled
+                  />
+                  <span @click.stop="updateGoodsCount(item, true)">+</span>
                 </div>
               </div>
+              <!-- 小计 -->
               <div class="item-total">
-                {{ (item.price / 100) * item.buy_count }}
+                {{ (item.price * item.buy_count) | moneyFormat() }}
               </div>
+              <!-- 删除操作 -->
               <div class="item-del">
-                <svg class="icon" aria-hidden="true">
+                <svg
+                  class="icon"
+                  aria-hidden="true"
+                  @click.stop="clickTrash(item, item.goods_id)"
+                >
                   <use xlink:href="#icon-close"></use>
                 </svg>
               </div>
@@ -57,12 +86,18 @@
         </div>
         <div class="cart-footer">
           <div class="cart-footer-left">
-            <p style="cursor:pointer">继续购物</p>
-            <p>共 <span>2</span> 件商品，已选择 <span>0</span> 件</p>
+            <router-link to="/">继续购物</router-link>
+            <p>
+              共 <span>{{ totalGoodsCount }}</span> 件商品，已选择
+              <span>{{ selectedGoodsCount }}</span> 件
+            </p>
           </div>
           <div class="cart-footer-right">
-            <p>合计：<span>0</span>元</p>
-            <button>去结算</button>
+            <p>
+              合计：<span>{{ totalPrice | moneyFormat() }}</span
+              >元
+            </p>
+            <button @click.stop="goToOrder()">去结算</button>
           </div>
         </div>
       </div>
@@ -74,17 +109,133 @@
 
 <script>
 import { mapState } from "vuex";
+import { Message, MessageBox } from "element-ui";
 import OrderHeader from "../../components/OrderHeader.vue";
 import OrderFooter from "../../components/OrderFooter.vue";
+import { delGoodsSinger } from "../../api/index";
 
 export default {
+  name: "shoppingCart",
   components: { OrderHeader, OrderFooter },
-  computed: {
-    ...mapState(["cartgoods"])
+  data() {
+    return {
+      isSelectedAll: false, //是否选中所有商品
+      totalPrice: 0, //商品总价格
+      currentDelGoods: {} //当前删除的商品
+    };
   },
   mounted() {
-    //请求商品数据
+    //请求购物车商品数据
     this.$store.dispatch("reqCartGoods");
+  },
+  computed: {
+    ...mapState(["cartgoods"]), //获取购物车数据
+    totalGoodsCount() {
+      //商品总件数
+      return this.cartgoods.length;
+    },
+    selectedGoodsCount() {
+      //已选择的商品件数
+      let goodsCount = 0;
+      this.cartgoods.forEach((goods, index) => {
+        if (goods.checked) {
+          goodsCount += 1;
+        }
+      });
+      return goodsCount;
+    }
+  },
+  //过滤器
+  filters: {
+    // 格式化金钱
+    moneyFormat(money) {
+      if (!money) return "0.00";
+      return "￥" + Number(money).toFixed(2);
+    }
+  },
+  methods: {
+    //1.单个商品的增加和减少
+    updateGoodsCount(goods, isAdd) {
+      this.$store.dispatch("updateGoodsCount", { goods, isAdd });
+
+      //1.1计算商品的总价格
+      this.getAllGoodsPrice();
+    },
+
+    //2.是否选中所有的商品
+    selectedAll(isSelected) {
+      //2.1总控制
+      this.isSelectedAll = !isSelected;
+      this.$store.dispatch("selectedAll", { isSelected });
+
+      //2.2计算商品的总价格
+      this.getAllGoodsPrice();
+    },
+
+    //3.计算商品的总价格
+    getAllGoodsPrice() {
+      let totalPrice = 0;
+      //3.1遍历
+      this.cartgoods.forEach((goods, index) => {
+        if (goods.checked) {
+          totalPrice += goods.price * goods.buy_count;
+        }
+      });
+
+      this.totalPrice = totalPrice;
+    },
+
+    //4.单个商品的选中和取消
+    singerGoodsSelected(goods) {
+      this.$store.dispatch("singerGoodsSelected", { goods });
+
+      //4.1计算商品的总价格
+      this.getAllGoodsPrice();
+
+      //4.2判断是否全选
+      this.hasSelectedAll();
+    },
+
+    //5.判断是否全选
+    hasSelectedAll() {
+      let flag = true;
+      this.cartgoods.forEach((goods, index) => {
+        if (!goods.checked) {
+          flag = false;
+        }
+      });
+      this.isSelectedAll = flag;
+    },
+
+    //6.点击删除
+    async clickTrash(goods, goods_id) {
+      MessageBox.confirm("您确定删除该商品吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(async () => {
+        this.$store.dispatch("delGoodsSinger", { goods });
+        let result = await delGoodsSinger(goods_id);
+        Message.success(result.message);
+
+        //6.1计算商品的总价格
+        this.getAllGoodsPrice();
+      });
+    },
+
+    //7.点击结算
+    goToOrder() {
+      //isCheck为true时，表示每一件商品都没有选中
+      let isCheck = this.cartgoods.every(item => !item.checked);
+      console.log(isCheck);
+      if (isCheck) {
+        MessageBox.alert("请选择一件商品", "提示", {
+          confirmButtonText: "确定"
+        });
+      } else {
+        this.$router.push("/order/confirm");
+      }
+    }
   }
 };
 </script>
@@ -95,7 +246,7 @@ export default {
     height auto
     background #f5f5f5
     .cart-main
-        height inherit
+        height 100%
         .container
             height inherit
             position relative
@@ -123,6 +274,14 @@ export default {
                     vertical-align middle
                     margin-right 17px
                     cursor pointer
+                .checked
+                    border 1px solid #f60
+                    background #f60
+                    &::after
+                      content '\2714'
+                      display block
+                      color #fff
+                      line-height 22px
                 .cart-item-head
                     height 80px
                     display flex
@@ -173,13 +332,22 @@ export default {
                                 line-height 40px
                                 border 1px solid #e1e1e1
                                 font-size 14px
-                                a
-                                    width 50px
+                                span
+                                    display inline-block
+                                    width 45px
+                                    cursor pointer
                                 input
-                                  width 50px
+                                  border-left 1px solid #e1e1e1
+                                  border-right 1px solid #e1e1e1
+                                  border-top none
+                                  border-bottom none
+                                  width 60px
                                   text-align center
-                                  border none
                                   color #333
+                                  &:focus
+                                    outline none
+                                  &:disabled
+                                    background #fff
 
                         .item-total
                             color #f60
@@ -195,7 +363,7 @@ export default {
               line-height 50px
               display flex
               justify-content  space-between
-              p
+              p, a
                 display inline-block
                 margin-right 27px
               span

@@ -79,5 +79,40 @@ export const addGoodsToCart = (
     "POST"
   );
 
-//2.16请求购物车数据
+//2.16 请求购物车数据
 export const getCartGoods = () => ajax(BASE_URL + "/api/cart_goods");
+
+//2.17 单个商品的删除
+export const delGoodsSinger = goods_id =>
+  ajax(BASE_URL + "/api/del_goods_singer", { goods_id }, "POST");
+
+//2.18 请求收货地址列表
+export const getShippingsList = () => ajax(BASE_URL + "/api/shippingslist");
+
+//2.17 单个收货地址的删除
+export const delAddressSingle = rec_id =>
+  ajax(BASE_URL + "/api/del_address_single", { rec_id }, "POST");
+
+//2.18 新增收货地址
+export const addAddress = (
+  rec_name,
+  rec_phone,
+  rec_province,
+  rec_city,
+  rec_district,
+  rec_address,
+  rec_zip
+) =>
+  ajax(
+    BASE_URL + "/api/add_shippings",
+    {
+      rec_name,
+      rec_phone,
+      rec_province,
+      rec_city,
+      rec_district,
+      rec_address,
+      rec_zip
+    },
+    "POST"
+  );

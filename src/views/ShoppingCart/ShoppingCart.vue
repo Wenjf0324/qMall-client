@@ -212,8 +212,6 @@ export default {
         }
       });
       this.isSelectedAll = flag;
-      console.log(flag);
-      return this.isSelectedAll;
     },
 
     //6.点击删除
@@ -234,7 +232,7 @@ export default {
     async goToOrder() {
       //no_Checked为true时，表示每一件商品都没有选中
       let no_Checked = this.cartgoods.every(item => !item.is_checked);
-      console.log(no_Checked);
+
       if (no_Checked) {
         MessageBox.alert("请选择一件商品", "提示", {
           confirmButtonText: "确定"

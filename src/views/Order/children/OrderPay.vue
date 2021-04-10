@@ -90,11 +90,15 @@ export default {
     return {
       isActive: false, //是否显示订单详情
       isHide: false, //订单详情的上拉和下拉图标的隐藏
-      orderNo: ""
+      orderNo: "" //订单号
     };
   },
-  mounted() {},
+  mounted() {
+    //根据订单号获取商品数据
+  },
   methods: {
+    //根据订单号获取商品详情
+    getOrderDetail() {},
     showDetails() {
       this.isActive = !this.isActive;
       this.isHide = !this.isHide;

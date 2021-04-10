@@ -12,7 +12,7 @@
         <div class="address-box">
           <ul>
             <li
-              :class="{ selected: currentIndex === index }"
+              :class="{ selected: checkIndex === index }"
               @click.stop="clickAddr(index)"
               v-for="(item, index) in shippingslist"
               :key="index"
@@ -103,7 +103,7 @@
         <button class="backbtn" @click="$router.replace('/shoppingcart')">
           返回购物车
         </button>
-        <button class="clearbtn" @click="orderSubmit">去结算</button>
+        <button class="clearbtn" @click.stop="orderSubmit">去结算</button>
       </div>
     </div>
     <modal
@@ -182,7 +182,7 @@
 <script>
 import { mapState } from "vuex";
 import { Message, MessageBox } from "element-ui";
-import { addAddress, updateAddress } from "../../../api/index";
+import { addAddress, updateAddress, addOrders } from "../../../api/index";
 import OrderHeader from "../../../components/OrderHeader";
 import Modal from "../../../components/Modal";
 export default {
@@ -195,9 +195,8 @@ export default {
     return {
       showDelModal: false, //是否显示删除弹框
       showEditModal: false, //是否显示新增或编辑弹框
-      currentIndex: -1, //当前选中的地址
-      list: [], //收货地址列表
-      checkItem: {},
+      checkIndex: 0, //当前选中的收货地址的索引
+      checkItem: {}, //当前选中的收货地址
       userAction: "" //用户行为 0 新增，1 编辑，2 删除
     };
   },
@@ -245,7 +244,7 @@ export default {
   methods: {
     //点击地址栏
     clickAddr(flag) {
-      this.currentIndex = flag;
+      this.checkIndex = flag;
     },
     //打开新增地址弹框
     openAddressModal() {
@@ -257,7 +256,6 @@ export default {
     editAddressModal(addressItem) {
       this.userAction = 1;
       this.checkItem = addressItem;
-      console.log(this.checkItem);
       this.showEditModal = true;
     },
     //删除单个地址
@@ -348,13 +346,50 @@ export default {
     },
 
     //订单提交
-    orderSubmit() {
-      let item = this.shippingslist[this.currentIndex];
-      if (!item) {
+    async orderSubmit() {
+      let addressItem = this.shippingslist[this.checkIndex];
+      if (!addressItem) {
         Message.error("请选择一个收货地址");
         return;
       }
       this.$router.push("/order/pay");
+
+      //生成一个订单编号 当前日期 + 6位随机数
+      let orderNo = this.getProjectNum() + Math.floor(Math.random() * 1000000);
+      // console.log(typeof orderNo);
+
+      //拼接收货地址
+      let addressInfo = `${addressItem.rec_province} ${addressItem.rec_city} ${addressItem.rec_district} ${addressItem.rec_address}`;
+
+      //提交订单并删除购物车数据
+      let result = await addOrders(
+        orderNo,
+        addressItem.rec_name,
+        addressItem.rec_phone,
+        addressInfo
+      );
+      console.log(result);
+    },
+
+    //获取当前日期
+    getProjectNum() {
+      const projectTime = new Date(); //当前中国标准时间
+      const Year = projectTime.getFullYear(); //获取当前年份 支持IE和火狐
+      const Month = projectTime.getMonth() + 1; //获取中国区月份
+      const Day = projectTime.getDate(); //获取几号
+      let currentDate = String(Year);
+      //判断月份和几号是否大于10或者小于10
+      if (Month >= 10) {
+        currentDate += Month;
+      } else {
+        currentDate += "0" + Month;
+      }
+      if (Day >= 10) {
+        currentDate += Day;
+      } else {
+        currentDate += "0" + Day;
+      }
+      return currentDate;
     }
   }
 };

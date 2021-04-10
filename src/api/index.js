@@ -153,3 +153,16 @@ export const updateAddress = (
     },
     "POST"
   );
+
+//提交订单
+export const addOrders = (order_no, rec_name, rec_phone, rec_addressInfo) =>
+  ajax(
+    BASE_URL + "/api/add_orders",
+    {
+      order_no,
+      rec_name,
+      rec_phone,
+      rec_addressInfo
+    },
+    "POST"
+  );

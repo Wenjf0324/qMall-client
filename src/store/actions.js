@@ -16,6 +16,7 @@ import {
   getUserInfo,
   getLogout,
   getCartGoods,
+  updateGoodsCount,
   delGoodsSingle,
   getShippingsList,
   delAddressSingle
@@ -160,7 +161,7 @@ export default {
   },
 
   //单个商品的增加和减少
-  updateGoodsCount({ commit }, { goods, isAdd }) {
+  async updateGoodsCount({ commit }, { goods, isAdd }) {
     if (isAdd) {
       //增加
       commit(ADD_GOODS_COUNT, { goods });
@@ -168,6 +169,7 @@ export default {
       //减少
       commit(REDUCE_GOODS_COUNT, { goods });
     }
+    await updateGoodsCount(goods.goods_id, goods.buy_count);
   },
 
   //是否选中所有的商品

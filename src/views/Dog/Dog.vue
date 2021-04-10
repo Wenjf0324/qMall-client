@@ -59,7 +59,8 @@ export default {
 
 <style lang="stylus" scoped>
 .dog-page
-  height 100%
+  height auto
+  margin-bottom 50px
 .dog-area
   padding-top 50px
   .aside

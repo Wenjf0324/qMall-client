@@ -59,21 +59,17 @@ export default {
   },
   components: { BannerNavHome, DogShopList, CatShopList },
   computed: {
-    ...mapState(["homecasual"]),
-    ...mapState(["userInfo"])
+    ...mapState(["homecasual", "userInfo"])
   },
   mounted() {
     //1.请求轮播图的数据
     this.$store.dispatch("reqHomeCasual");
 
-    //2.请求首页商品列表数据
-    // this.$store.dispatch("reqHomeShopList");
+    //2.请求狗狗推荐列表
+    this.$store.dispatch("reqDogRecommend");
 
-    //3.请求狗狗主食的商品列表数据
-    this.$store.dispatch("reqDogFoodList");
-
-    //3.请求狗狗零食的商品列表数据
-    this.$store.dispatch("reqDogSnacksList");
+    //3.请求猫咪推荐列表
+    this.$store.dispatch("reqCatRecommend");
   },
   watch: {
     homecasual() {
@@ -147,5 +143,5 @@ export default {
                             background red
                             color #fff
     .pruduct-box
-      margin-top 40px
+      margin 40px 0
 </style>

@@ -3,7 +3,7 @@
     <nav-header v-show="$route.meta.showNavHeader" />
 
     <!-- 缓存路由对象数据，购物车保持刷新 -->
-    <keep-alive exclude="shoppingCart,orderConfirm">
+    <keep-alive exclude="shoppingCart,orderConfirm,detail">
       <router-view></router-view>
     </keep-alive>
 

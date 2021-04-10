@@ -1,8 +1,10 @@
 export default {
   //首页轮播图
   homecasual: [],
-  //首页商品列表
-  homeshoplist: [],
+  //狗狗推荐列表
+  dogrecommend: [],
+  //猫咪推荐列表
+  catrecommend: [],
 
   //狗狗主食列表
   dogfoodlist: [],
@@ -28,13 +30,13 @@ export default {
 
   //用户数据
   userInfo: {},
+
   //购物车数据
   cartgoods: [],
+
   //收货地址数据
   shippingslist: [],
 
   //单个商品的数据
-  singlegoods: {},
-  //购物车的数量
-  cartCount: 0
+  singlegoods: {}
 };

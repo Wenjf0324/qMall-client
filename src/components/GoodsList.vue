@@ -12,7 +12,7 @@
           width="100%"
         />
         <p
-          @click="switchTo(`/detail/${item.goods_id}`)"
+          @click="getGoodsInfoAndSwitchTo(item, `/detail/${item.goods_id}`)"
           class="list-item-title"
         >
           {{ item.goods_name }}
@@ -67,6 +67,7 @@ export default {
     }
   },
   methods: {
+    //跳转到详情页并展示数据
     getGoodsInfoAndSwitchTo(singlegoods, path) {
       this.$router.replace(path);
       this.$store.dispatch("getGoodsSingle", { singlegoods });
@@ -127,8 +128,13 @@ export default {
             font-size 12px
             color #666
             line-height 1.5em
-            height 40px
+            height 36px
+            margin 6px 0
             overflow hidden
+            text-overflow ellipsis
+            display -webkit-box
+            -webkit-line-clamp 2
+            -webkit-box-orient vertical
         .shop-list-bottom
           position relative
           .item-price

@@ -41,8 +41,8 @@
               <div class="item-check">
                 <span
                   class="checkbox"
-                  :class="{ checked: item.checked }"
-                  @click.stop="singerGoodsSelected(item)"
+                  :class="{ checked: item.is_checked }"
+                  @click.stop="singleGoodsSelected(item)"
                 ></span>
               </div>
               <!-- 商品名称 -->
@@ -112,7 +112,7 @@ import { mapState } from "vuex";
 import { Message, MessageBox } from "element-ui";
 import OrderHeader from "../../components/OrderHeader.vue";
 import OrderFooter from "../../components/OrderFooter.vue";
-import { delGoodsSinger } from "../../api/index";
+import { updateChecked } from "../../api/index";
 
 export default {
   name: "shoppingCart",
@@ -127,6 +127,8 @@ export default {
   mounted() {
     //请求购物车商品数据
     this.$store.dispatch("reqCartGoods");
+    this.hasSelectedAll();
+    this.getAllGoodsPrice();
   },
   computed: {
     ...mapState(["cartgoods"]), //获取购物车数据
@@ -138,7 +140,7 @@ export default {
       //已选择的商品件数
       let goodsCount = 0;
       this.cartgoods.forEach((goods, index) => {
-        if (goods.checked) {
+        if (goods.is_checked) {
           goodsCount += 1;
         }
       });
@@ -163,10 +165,14 @@ export default {
     },
 
     //2.是否选中所有的商品
-    selectedAll(isSelected) {
+    async selectedAll(isSelected) {
       //2.1总控制
       this.isSelectedAll = !isSelected;
       this.$store.dispatch("selectedAll", { isSelected });
+      //更新商品的选中状态
+      this.cartgoods.forEach(async (goods, index) => {
+        await updateChecked(goods.goods_id, goods.is_checked);
+      });
 
       //2.2计算商品的总价格
       this.getAllGoodsPrice();
@@ -177,17 +183,18 @@ export default {
       let totalPrice = 0;
       //3.1遍历
       this.cartgoods.forEach((goods, index) => {
-        if (goods.checked) {
+        if (goods.is_checked) {
           totalPrice += goods.price * goods.buy_count;
         }
       });
-
       this.totalPrice = totalPrice;
     },
 
     //4.单个商品的选中和取消
-    singerGoodsSelected(goods) {
-      this.$store.dispatch("singerGoodsSelected", { goods });
+    async singleGoodsSelected(goods) {
+      this.$store.dispatch("singleGoodsSelected", { goods });
+
+      await updateChecked(goods.goods_id, goods.is_checked);
 
       //4.1计算商品的总价格
       this.getAllGoodsPrice();
@@ -200,23 +207,23 @@ export default {
     hasSelectedAll() {
       let flag = true;
       this.cartgoods.forEach((goods, index) => {
-        if (!goods.checked) {
+        if (!goods.is_checked) {
           flag = false;
         }
       });
       this.isSelectedAll = flag;
+      console.log(flag);
+      return this.isSelectedAll;
     },
 
     //6.点击删除
-    async clickTrash(goods, goods_id) {
+    clickTrash(goods, goods_id) {
       MessageBox.confirm("您确定删除该商品吗？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(async () => {
-        this.$store.dispatch("delGoodsSinger", { goods });
-        let result = await delGoodsSinger(goods_id);
-        Message.success(result.message);
+      }).then(() => {
+        this.$store.dispatch("delGoodsSingle", { goods });
 
         //6.1计算商品的总价格
         this.getAllGoodsPrice();
@@ -224,16 +231,16 @@ export default {
     },
 
     //7.点击结算
-    goToOrder() {
-      //isCheck为true时，表示每一件商品都没有选中
-      let isCheck = this.cartgoods.every(item => !item.checked);
-      console.log(isCheck);
-      if (isCheck) {
+    async goToOrder() {
+      //no_Checked为true时，表示每一件商品都没有选中
+      let no_Checked = this.cartgoods.every(item => !item.is_checked);
+      console.log(no_Checked);
+      if (no_Checked) {
         MessageBox.alert("请选择一件商品", "提示", {
           confirmButtonText: "确定"
         });
       } else {
-        this.$router.push("/order/confirm");
+        this.$router.replace("/order/confirm");
       }
     }
   }

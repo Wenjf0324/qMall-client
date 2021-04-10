@@ -1,11 +1,11 @@
 <template>
   <div class="order-pay">
-    <!-- <order-header title="订单支付">
+    <order-header title="订单支付">
       <template v-slot:tip>
         <span>请谨防钓鱼链接或诈骗电话</span>
       </template>
-    </order-header> -->
-    <div class="container">
+    </order-header>
+    <div class="pay-container">
       <div class="order-details">
         <div class="item-order">
           <div class="icon-succ">
@@ -105,12 +105,14 @@ export default {
 
 <style lang="stylus">
 .order-pay
-  .container
+  .pay-container
+    width 1190px
     margin 50px auto 80px
     border-radius 4px
     .order-details
       padding 42px
       background #fff
+      border-radius 4px
       .item-order
         display flex
         span
@@ -177,6 +179,7 @@ export default {
       margin-top 30px
       padding 42px 42px 64px
       background #fff
+      border-radius 4px
       h3
         font-size 20px
         font-weight 200

@@ -1,6 +1,11 @@
 <template>
   <div class="orderconfirm-page">
-    <div class="container clearfix">
+    <order-header title="订单确认">
+      <template v-slot:tip>
+        <span>请认真填写收获地址</span>
+      </template>
+    </order-header>
+    <div class="confirm-container clearfix">
       <!-- 收货地址 -->
       <div class="shipping-address">
         <h2 class="address-title">收货地址</h2>
@@ -208,7 +213,7 @@ export default {
 
     //购物车中需要结算的商品列表
     cartList() {
-      return this.cartgoods.filter(item => item.checked);
+      return this.cartgoods.filter(item => item.is_checked);
     },
     //计算商品的总件数
     totalCount() {
@@ -402,7 +407,8 @@ export default {
         &:focus
           outline none
 
-  .container
+  .confirm-container
+    width 1190px
     background #fff
     margin 50px auto 80px
     padding-top 42px

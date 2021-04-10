@@ -8,11 +8,7 @@
             <div class="big-img">
               <ul class="bigimg-list">
                 <li v-for="(item, index) in singlegoods.img_list" :key="index">
-                  <img
-                    v-lazy="item"
-                    width="100%"
-                    v-show="currentIndex === index"
-                  />
+                  <img :src="item" width="100%" v-if="currentIndex === index" />
                 </li>
               </ul>
             </div>
@@ -44,13 +40,16 @@
                 <span class="sumTit">产品规格：</span>{{ singlegoods.weight }}
               </p>
               <p>
-                <span class="sumTit">适用犬类：</span>{{ singlegoods.object }}
+                <span class="sumTit">适用对象：</span>{{ singlegoods.object }}
               </p>
               <p>
                 <span class="sumTit">购买数量：</span>
-                <span class="number">-</span>
-                <span class="number">1</span>
-                <span class="number">+</span>
+                <span class="num-box">
+                  <span @click.stop="updateGoodsCount(false)">-</span>
+                  <!-- <span class="number">{{ goods_count }}</span> -->
+                  <input type="text" :value="goods_count" disabled />
+                  <span @click.stop="updateGoodsCount(true)">+</span>
+                </span>
               </p>
             </div>
             <div class="buy">
@@ -107,7 +106,7 @@
           <li>
             <img src="../assets/images/shop_list/cat/goods1.jpg" width="100%" />
             <div class="desc">
-              <p>小型犬幼犬离乳期奶糕粮...</p>
+              <p>法国皇家Royal Canin 小型犬幼犬离乳期奶糕粮 1kg</p>
               <p class="price">￥69.2</p>
               <router-link to="/detail">立即购买</router-link>
             </div>
@@ -115,7 +114,7 @@
           <li>
             <img src="../assets/images/shop_list/dog/goods3.jpg" width="100%" />
             <div class="desc">
-              <p>小型犬幼犬离乳期奶糕粮...</p>
+              <p>法国皇家Royal Canin 小型犬幼犬离乳期奶糕粮 1kg</p>
               <p class="price">￥69.2</p>
               <router-link to="/detail">立即购买</router-link>
             </div>
@@ -123,7 +122,7 @@
           <li>
             <img src="../assets/images/shop_list/dog/goods1.jpg" width="100%" />
             <div class="desc">
-              <p>小型犬幼犬离乳期奶糕粮...</p>
+              <p>法国皇家Royal Canin 小型犬幼犬离乳期奶糕粮 1kg</p>
               <p class="price">￥69.2</p>
               <router-link to="/detail">立即购买</router-link>
             </div>
@@ -154,6 +153,7 @@ import { addGoodsToCart } from "../api/index";
 import { mapState } from "vuex";
 import { Message, MessageBox } from "element-ui";
 export default {
+  name: "detail",
   components: {
     BannerNavOther,
     Modal
@@ -165,6 +165,7 @@ export default {
     return {
       currentIndex: 0, //当前展示的图片
       checkIndex: 0, //选中的图片
+      goods_count: 1, //购买数量
       detailsType: true, //true 详细信息，false 用户评价
       showModal: false
     };
@@ -184,6 +185,18 @@ export default {
     },
     changeDetails(flag) {
       this.detailsType = flag;
+    },
+    //单个商品的增加和减少
+    updateGoodsCount(isAdd) {
+      if (isAdd) {
+        this.goods_count += 1;
+      } else {
+        this.goods_count -= 1;
+        if (this.goods_count === 0) {
+          this.goods_count = 1;
+          Message.warning("商品至少保留一件");
+        }
+      }
     },
     async addCart(goods) {
       //1.发送请求
@@ -278,13 +291,22 @@ export default {
             color #666
             p
               margin 26px 0
-              .number
+              .num-box
                 display inline-block
                 border 1px solid #e1e1e1
+                span
+                  display inline-block
+                  padding 6px 8px
+                  cursor pointer
+              input
+                width 50px
+                background #fff
+                text-align center
                 padding 6px 8px
-                margin-right -5px
-                &:nth-child(3)
-                  padding: 6px 16px
+                border-left 1px solid #e1e1e1
+                border-right 1px solid #e1e1e1
+                border-top none
+                border-bottom none
               .sumTit
                 display inline-block
                 width 80px
@@ -372,7 +394,11 @@ export default {
             width 82px
           .desc
             margin-left 8px
+            overflow hidden
             p
+              overflow hidden
+              text-overflow ellipsis
+              white-space nowrap
               &:first-child
                 color #666
                 font-size 12px

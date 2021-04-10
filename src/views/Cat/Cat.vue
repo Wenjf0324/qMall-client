@@ -59,7 +59,8 @@ export default {
 
 <style lang="stylus" scoped>
 .cat-page
-  height 100%
+  height auto
+  margin-bottom 50px
 .cat-area
   padding-top 50px
   .aside

@@ -8,8 +8,11 @@ const BASE_URL = "/api";
 //2.1请求首页的轮播图
 export const getHomeCasual = () => ajax(BASE_URL + "/api/homecasual");
 
-//2.1请求首页的商品的数据
-export const getHomeShopList = () => ajax(BASE_URL + "/api/homeshoplist");
+//2.1请求狗狗推荐的商品的数据
+export const getDogRecommend = () => ajax(BASE_URL + "/api/dogrecommend");
+
+//2.1请求猫咪推荐的商品的数据
+export const getCatRecommend = () => ajax(BASE_URL + "/api/catrecommend");
 
 //2.2请求狗狗主食的商品的数据
 export const getDogFoodList = () => ajax(BASE_URL + "/api/dogfoodlist");
@@ -82,9 +85,17 @@ export const addGoodsToCart = (
 //2.16 请求购物车数据
 export const getCartGoods = () => ajax(BASE_URL + "/api/cart_goods");
 
+//2.17 更新单个商品的购买数量
+export const updateGoodsCount = (goods_id, buy_count) =>
+  ajax(BASE_URL + "/api/update_goodscount", { goods_id, buy_count }, "POST");
+
+//2.17 更新单个商品的选中状态
+export const updateChecked = (goods_id, is_checked) =>
+  ajax(BASE_URL + "/api/update_checked", { goods_id, is_checked }, "POST");
+
 //2.17 单个商品的删除
-export const delGoodsSinger = goods_id =>
-  ajax(BASE_URL + "/api/del_goods_singer", { goods_id }, "POST");
+export const delGoodsSingle = goods_id =>
+  ajax(BASE_URL + "/api/del_goods_single", { goods_id }, "POST");
 
 //2.18 请求收货地址列表
 export const getShippingsList = () => ajax(BASE_URL + "/api/shippingslist");

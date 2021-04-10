@@ -1,6 +1,8 @@
+import { Message } from "element-ui";
 import {
   getHomeCasual,
-  getHomeShopList,
+  getDogRecommend,
+  getCatRecommend,
   getDogFoodList,
   getDogSnacksList,
   getDogDailyList,
@@ -14,13 +16,15 @@ import {
   getUserInfo,
   getLogout,
   getCartGoods,
+  delGoodsSingle,
   getShippingsList,
   delAddressSingle
 } from "../api";
 
 import {
   HOME_CASUAL,
-  HOME_SHOP_LIST,
+  DOG_RECOMMEND,
+  CAT_RECOMMEND,
   DOG_FOOD_LIST,
   DOG_SNACKS_LIST,
   DOG_DAILY_LIST,
@@ -37,10 +41,9 @@ import {
   ADD_GOODS_COUNT,
   REDUCE_GOODS_COUNT,
   SELECTED_ALL_GOODS,
-  SELECTED_SINGER_GOODS,
-  DEL_SINGER_GOODS,
+  SELECTED_SINGLE_GOODS,
+  DEL_SINGLE_GOODS,
   GET_SINGLE_GOODS,
-  CART_COUNT,
   SHIPPINGS_LIST,
   DEL_SINGLE_ADDRESS
 } from "./mutation-types";
@@ -49,13 +52,19 @@ export default {
   //1.获取首页轮播图
   async reqHomeCasual({ commit }) {
     const result = await getHomeCasual();
-    commit(HOME_CASUAL, { homecasual: result.message });
+    commit(HOME_CASUAL, { homecasual: result.message.data });
   },
 
-  //2.获取首页商品列表
-  async reqHomeShopList({ commit }) {
-    const result = await getHomeShopList();
-    commit(HOME_SHOP_LIST, { homeshoplist: result.message.goods_list });
+  //2.获取狗狗推荐商品列表
+  async reqDogRecommend({ commit }) {
+    const result = await getDogRecommend();
+    commit(DOG_RECOMMEND, { dogrecommend: result.message.goods_list });
+  },
+
+  //2.获取猫咪推荐商品列表
+  async reqCatRecommend({ commit }) {
+    const result = await getCatRecommend();
+    commit(CAT_RECOMMEND, { catrecommend: result.message.goods_list });
   },
 
   //3.获取狗狗主食商品列表
@@ -166,23 +175,22 @@ export default {
   },
 
   //单个商品的选中和取消
-  singerGoodsSelected({ commit }, { goods }) {
-    commit(SELECTED_SINGER_GOODS, { goods });
+  singleGoodsSelected({ commit }, { goods }) {
+    commit(SELECTED_SINGLE_GOODS, { goods });
   },
 
   //单个商品的删除
-  delGoodsSinger({ commit }, { goods }) {
-    commit(DEL_SINGER_GOODS, { goods });
+  async delGoodsSingle({ commit }, { goods }) {
+    commit(DEL_SINGLE_GOODS, { goods });
+    const result = await delGoodsSingle(goods.goods_id);
+    if (result.success_code === 200) {
+      Message.success(result.message);
+    }
   },
 
   //获取单个商品的数据，用于商品详情页的展示
   getGoodsSingle({ commit }, { singlegoods }) {
     commit(GET_SINGLE_GOODS, { singlegoods });
-  },
-
-  //购物车总数量
-  saveCartCount({ commit }, { cartCount }) {
-    commit(CART_COUNT, { cartCount });
   },
 
   //请求收货地址列表数据

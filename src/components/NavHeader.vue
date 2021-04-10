@@ -60,6 +60,9 @@ export default {
       user_name: ""
     };
   },
+  mounted() {
+    this.$store.dispatch("reqCartGoods");
+  },
   computed: {
     ...mapState(["userInfo", "cartgoods"]),
     cartCount() {

@@ -127,3 +127,29 @@ export const addAddress = (
     },
     "POST"
   );
+
+//更新收货地址
+export const updateAddress = (
+  rec_id,
+  rec_name,
+  rec_phone,
+  rec_province,
+  rec_city,
+  rec_district,
+  rec_address,
+  rec_zip
+) =>
+  ajax(
+    BASE_URL + "/api/update_shippings",
+    {
+      rec_id,
+      rec_name,
+      rec_phone,
+      rec_province,
+      rec_city,
+      rec_district,
+      rec_address,
+      rec_zip
+    },
+    "POST"
+  );

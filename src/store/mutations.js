@@ -24,7 +24,8 @@ import {
   DEL_SINGLE_GOODS,
   GET_SINGLE_GOODS,
   SHIPPINGS_LIST,
-  DEL_SINGLE_ADDRESS
+  DEL_SINGLE_ADDRESS,
+  ADD_SINGLE_ADDRESS
 } from "./mutation-types";
 
 export default {
@@ -153,8 +154,12 @@ export default {
     state.shippingslist = shippingslist;
   },
 
-  [DEL_SINGLE_ADDRESS](state, { shippingsItem }) {
-    const index = state.shippingslist.indexOf(shippingsItem);
+  [DEL_SINGLE_ADDRESS](state, { checkItem }) {
+    const index = state.shippingslist.indexOf(checkItem);
     state.shippingslist.splice(index, 1);
+  },
+
+  [ADD_SINGLE_ADDRESS](state, { checkItem }) {
+    state.shippingslist.push(checkItem);
   }
 };

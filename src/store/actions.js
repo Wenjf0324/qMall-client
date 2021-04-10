@@ -45,7 +45,8 @@ import {
   DEL_SINGLE_GOODS,
   GET_SINGLE_GOODS,
   SHIPPINGS_LIST,
-  DEL_SINGLE_ADDRESS
+  DEL_SINGLE_ADDRESS,
+  ADD_SINGLE_ADDRESS
 } from "./mutation-types";
 
 export default {
@@ -202,7 +203,17 @@ export default {
   },
 
   //单个收货地址的删除
-  async delAddressSingle({ commit }, { shippingsItem }) {
-    commit(DEL_SINGLE_ADDRESS, { shippingsItem });
+  async delAddressSingle({ commit }, { checkItem }) {
+    commit(DEL_SINGLE_ADDRESS, { checkItem });
+    console.log(checkItem);
+    const result = await delAddressSingle(checkItem.rec_id);
+    if (result.success_code === 200) {
+      Message.success("操作成功");
+    }
+  },
+
+  //单个收货地址的添加
+  addAddressSingle({ commit }, { checkItem }) {
+    commit(ADD_SINGLE_ADDRESS, { checkItem });
   }
 };

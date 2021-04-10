@@ -182,7 +182,7 @@
 <script>
 import { mapState } from "vuex";
 import { Message, MessageBox } from "element-ui";
-import { delAddressSingle, addAddress } from "../../../api/index";
+import { addAddress, updateAddress } from "../../../api/index";
 import OrderHeader from "../../../components/OrderHeader";
 import Modal from "../../../components/Modal";
 export default {
@@ -269,6 +269,7 @@ export default {
     async submitAddress() {
       let { checkItem, userAction } = this;
       let {
+        rec_id,
         rec_name,
         rec_phone,
         rec_province,
@@ -277,8 +278,8 @@ export default {
         rec_address,
         rec_zip
       } = checkItem;
-      if (userAction === 0) {
-        //新增地址
+
+      if (userAction === 0 || userAction === 1) {
         if (!rec_name) {
           Message.error("请输入收货人名称!");
           return;
@@ -298,7 +299,10 @@ export default {
           Message.error("请输入六位邮编");
           return;
         }
-
+      }
+      if (userAction === 0) {
+        //新增地址
+        this.$store.dispatch("addAddressSingle", { checkItem });
         const result = await addAddress(
           rec_name,
           rec_phone,
@@ -312,35 +316,27 @@ export default {
           Message.success("操作成功");
           this.closeModal();
         }
+      } else if (userAction === 1) {
+        //编辑地址
+        const result = await updateAddress(
+          rec_id,
+          rec_name,
+          rec_phone,
+          rec_province,
+          rec_city,
+          rec_district,
+          rec_address,
+          rec_zip
+        );
+        if (result) {
+          Message.success("操作成功");
+          this.closeModal();
+        }
       } else if (userAction === 2) {
-        //删除
+        //删除地址
         this.$store.dispatch("delAddressSingle", { checkItem });
-        let result = await delAddressSingle(checkItem.rec_id);
-        Message.success("操作成功");
         this.closeModal();
       } else {
-      }
-
-      if (userAction === 0 || userAction === 1) {
-        let errMsg = "";
-        if (!rec_name) {
-          errMsg = "请输入收货人名称!";
-        } else if (!rec_phone || !/^[1][3,4,5,7,8][0-9]{9}$/.test(rec_phone)) {
-          errMsg = "请输入正确格式的手机号";
-        } else if (!rec_province) {
-          errMsg = "请选择省份";
-        } else if (!rec_city) {
-          errMsg = "请选择对应的城市";
-        } else if (!rec_district || !rec_address) {
-          errMsg = "请输入收货地址";
-        } else if (!/\d{6}/.test(rec_zip)) {
-          errMsg = "请输入六位邮编";
-        }
-
-        if (errMsg) {
-          Message.error(errMsg);
-          return;
-        }
       }
     },
     //关闭弹窗

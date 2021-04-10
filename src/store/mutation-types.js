@@ -25,3 +25,4 @@ export const DEL_SINGLE_GOODS = "del_single_goods"; //单个商品的删除
 export const GET_SINGLE_GOODS = "get_single_goods"; //获取单个商品的数据
 export const SHIPPINGS_LIST = "shippings_list"; //收货地址列表数据
 export const DEL_SINGLE_ADDRESS = "del_single_address"; //单个收货地址的删除
+export const ADD_SINGLE_ADDRESS = "add_single_address"; //单个收货地址的新增

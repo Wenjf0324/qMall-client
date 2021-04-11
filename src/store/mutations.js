@@ -25,7 +25,9 @@ import {
   GET_SINGLE_GOODS,
   SHIPPINGS_LIST,
   DEL_SINGLE_ADDRESS,
-  ADD_SINGLE_ADDRESS
+  ADD_SINGLE_ADDRESS,
+  GET_SINGLE_ORDERS,
+  ORDER_LIST
 } from "./mutation-types";
 
 export default {
@@ -161,5 +163,21 @@ export default {
 
   [ADD_SINGLE_ADDRESS](state, { checkItem }) {
     state.shippingslist.push(checkItem);
+  },
+
+  [ORDER_LIST](state, { orderlist }) {
+    state.orderlist = orderlist;
+  },
+
+  [GET_SINGLE_ORDERS](state, { singleorders }) {
+    // if (state.orderlist.length > 0) {
+    //   state.orderlist.forEach((orders, index) => {
+    //     if (orders.order_no === orderNo) {
+    //       state.singleorders.push(orders);
+    //     }
+    //   });
+    // }
+
+    state.singleorders = singleorders;
   }
 };

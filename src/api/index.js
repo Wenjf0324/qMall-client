@@ -128,7 +128,7 @@ export const addAddress = (
     "POST"
   );
 
-//更新收货地址
+//2.19更新收货地址
 export const updateAddress = (
   rec_id,
   rec_name,
@@ -154,15 +154,29 @@ export const updateAddress = (
     "POST"
   );
 
-//提交订单
-export const addOrders = (order_no, rec_name, rec_phone, rec_addressInfo) =>
+//2.20提交订单
+export const addOrders = (
+  order_no,
+  rec_name,
+  rec_phone,
+  rec_addressInfo,
+  total_price
+) =>
   ajax(
     BASE_URL + "/api/add_orders",
     {
       order_no,
       rec_name,
       rec_phone,
-      rec_addressInfo
+      rec_addressInfo,
+      total_price
     },
     "POST"
   );
+
+// 请求订单列表数据
+export const getOrderList = () => ajax(BASE_URL + "/api/orderlist");
+
+//2.17 单个商品的删除
+export const getSingleOrders = order_no =>
+  ajax(BASE_URL + "/api/getsingleorders", { order_no });

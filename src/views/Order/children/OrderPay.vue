@@ -14,24 +14,28 @@
             </svg>
           </div>
           <div class="order-info">
+            <!-- <div>{{ currentOrders }}</div> -->
             <h2>订单提交成功！去付款咯~</h2>
             <p>请在<span>30分钟</span>内完成支付，超时后将取消订单</p>
-            <p>收货信息：123 12333333333 河北 河北 河北 123</p>
+            <p>收货信息：{{ addressInfo }}</p>
           </div>
           <div class="order-total">
-            <p>应付总额：<span>2599</span>元</p>
+            <p>
+              应付总额：<span>{{ totalPrice | moneyFormat }}</span
+              >元
+            </p>
             <div>
               订单详情
               <div
                 class="icon-detailsbtn"
-                :class="{ hide: !isHide }"
+                :class="{ up: showDetail }"
                 @click.stop="showDetails()"
               >
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-down"></use>
                 </svg>
               </div>
-              <div
+              <!-- <div
                 class="icon-detailsbtn"
                 :class="{ hide: isHide }"
                 @click.stop="showDetails()"
@@ -39,28 +43,27 @@
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-up"></use>
                 </svg>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
         <div class="item-detail" :class="{ show: isActive }">
           <div class="item">
             <div class="detail-title">订单号:</div>
-            <div class="detail-info">1617333966472</div>
+            <div class="detail-info">{{ orderNo }}</div>
           </div>
           <div class="item">
             <div class="detail-title">收货信息:</div>
-            <div class="detail-info">123 12333333333 河北 河北 河北 123</div>
+            <div class="detail-info">{{ addressInfo }}</div>
           </div>
           <div class="item">
-            <div class="detail-title">商品名称:</div>
-            <div class="detail-info">
-              <img
-                src="../../../assets/images/shop_list/dog/goods1.jpg"
-                alt=""
-              />
-              <p>宝路 Pedigree 中小型成犬粮牛肉肝蔬菜及谷物狗粮7.5kg</p>
-            </div>
+            <div class="detail-title">商品信息:</div>
+            <ul class="detail-info goods-info" v-if="orderGoodsList.length > 0">
+              <li v-for="(goods, index) in orderGoodsList" :key="index">
+                <img v-lazy="goods.imgurl" alt="" />
+                <p>{{ goods.goods_name }}</p>
+              </li>
+            </ul>
           </div>
           <!-- <div class="item">
             <div class="detail-title">发票信息:</div>
@@ -82,26 +85,87 @@
 
 <script>
 import OrderHeader from "../../../components/OrderHeader";
-
+import { mapState } from "vuex";
 export default {
   name: "order-pay",
   components: { OrderHeader },
   data() {
     return {
       isActive: false, //是否显示订单详情
-      isHide: false, //订单详情的上拉和下拉图标的隐藏
-      orderNo: "" //订单号
+      showDetail: false, //订单详情的上拉和下拉图标的隐藏
+      orderNo: this.$route.query.orderNo //订单号
     };
   },
   mounted() {
-    //根据订单号获取商品数据
+    //请求订单列表数据
+    this.$store.dispatch("reqOrderList");
+  },
+  computed: {
+    ...mapState(["orderlist"]), //获取订单列表数据
+
+    //当前订单号的订单详情
+    currentOrders() {
+      let currentorders = [];
+      if (this.orderlist.length > 0) {
+        this.orderlist.forEach((orders, index) => {
+          if (orders.order_no === this.orderNo) {
+            currentorders.push(orders);
+          }
+        });
+      }
+      return currentorders;
+    },
+
+    //应付总金额
+    totalPrice() {
+      let total_price = 0;
+      this.currentOrders.forEach((orders, index) => {
+        total_price = orders.total_price;
+      });
+      return total_price;
+    },
+
+    //收货人地址
+    addressInfo() {
+      let address_info;
+      this.currentOrders.forEach((orders, index) => {
+        address_info =
+          orders.rec_name +
+          " " +
+          orders.rec_phone +
+          " " +
+          orders.rec_addressInfo;
+      });
+      return address_info;
+    },
+
+    //商品列表
+    orderGoodsList() {
+      let goodslist = [];
+      this.currentOrders.forEach((orders, index) => {
+        //临时对象
+        let obj = {};
+        obj.imgurl = orders.thumb_url;
+        obj.goods_name = orders.goods_name;
+        goodslist.push(obj);
+      });
+      return goodslist;
+    }
+  },
+  //过滤器
+  filters: {
+    // 格式化金钱
+    moneyFormat(money) {
+      if (!money) return "0.00";
+      return Number(money).toFixed(2);
+    }
   },
   methods: {
     //根据订单号获取商品详情
     getOrderDetail() {},
     showDetails() {
       this.isActive = !this.isActive;
-      this.isHide = !this.isHide;
+      this.showDetail = !this.showDetail;
     }
   }
 };
@@ -150,8 +214,9 @@ export default {
           .icon-detailsbtn
             display inline-block
             cursor pointer
-          .hide
-            display none
+            transition all .5s
+          .up
+            transform rotate(180deg)
 
       .item-detail
         border-top 1px solid #e1e1e1
@@ -163,19 +228,27 @@ export default {
         transition height 0.3s
         .item
           display flex
-          align-items center
+          align-items flex-start
           margin-bottom 19px
           font-size 14px
           .detail-title
             float left
             width 100px
-          .detail-info
-            display inline-flex
-            align-items center
-            img
-              width 30px
-            p
-              display inline-block
+          .goods-info
+            // border 1px solid #e1e1e1
+            // padding 0 8px
+            li
+              display flex
+              align-items center
+              margin-bottom 8px
+              // padding 8px 0
+              // border-bottom 1px dashed #e1e1e1
+              // &:last-child
+              //   border-bottom none
+              img
+                width 38px
+                margin-right 8px
+
       .show
         display block
 

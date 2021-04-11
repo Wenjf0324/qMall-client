@@ -38,5 +38,11 @@ export default {
   shippingslist: [],
 
   //单个商品的数据
-  singlegoods: {}
+  singlegoods: {},
+
+  //订单列表数据
+  orderlist: [],
+
+  //单个订单详情的数据
+  singleorders: []
 };

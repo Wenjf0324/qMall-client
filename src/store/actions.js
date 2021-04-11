@@ -19,7 +19,9 @@ import {
   updateGoodsCount,
   delGoodsSingle,
   getShippingsList,
-  delAddressSingle
+  delAddressSingle,
+  getOrderList,
+  getSingleOrders
 } from "../api";
 
 import {
@@ -47,7 +49,9 @@ import {
   GET_SINGLE_GOODS,
   SHIPPINGS_LIST,
   DEL_SINGLE_ADDRESS,
-  ADD_SINGLE_ADDRESS
+  ADD_SINGLE_ADDRESS,
+  GET_SINGLE_ORDERS,
+  ORDER_LIST
 } from "./mutation-types";
 
 export default {
@@ -217,5 +221,26 @@ export default {
   //单个收货地址的添加
   addAddressSingle({ commit }, { checkItem }) {
     commit(ADD_SINGLE_ADDRESS, { checkItem });
+  },
+
+  //请求订单列表数据
+  async reqOrderList({ commit }) {
+    const result = await getOrderList();
+    if (result.success_code === 200) {
+      commit(ORDER_LIST, { orderlist: result.message });
+    }
+  },
+
+  //获取单个订单详情数据
+  async reqSingleOrders({ commit }, { orderNo }) {
+    console.log(orderNo);
+    const result = await getSingleOrders(orderNo);
+    console.log(result);
+    if (result.success_code === 200) {
+      commit(GET_SINGLE_ORDERS, { singleorders: result.message });
+    }
   }
+  // getSingleOrders({ commit }, { orderNo }) {
+  //   commit(GET_SINGLE_ORDERS, { orderNo });
+  // }
 };

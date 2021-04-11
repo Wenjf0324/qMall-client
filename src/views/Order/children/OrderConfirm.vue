@@ -352,23 +352,29 @@ export default {
         Message.error("请选择一个收货地址");
         return;
       }
-      this.$router.push("/order/pay");
-
       //生成一个订单编号 当前日期 + 6位随机数
       let orderNo = this.getProjectNum() + Math.floor(Math.random() * 1000000);
-      // console.log(typeof orderNo);
 
       //拼接收货地址
       let addressInfo = `${addressItem.rec_province} ${addressItem.rec_city} ${addressItem.rec_district} ${addressItem.rec_address}`;
 
+      console.log(this.totalPrice);
       //提交订单并删除购物车数据
       let result = await addOrders(
         orderNo,
         addressItem.rec_name,
         addressItem.rec_phone,
-        addressInfo
+        addressInfo,
+        this.totalPrice
       );
       console.log(result);
+      if (result.success_code === 200) {
+        //跳转页面
+        this.$router.push({
+          path: "/order/pay",
+          query: { orderNo }
+        });
+      }
     },
 
     //获取当前日期

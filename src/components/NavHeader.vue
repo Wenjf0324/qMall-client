@@ -11,7 +11,7 @@
           </li>
           <li @click="switchTo('/login')" v-if="!userInfo.id">登录</li>
           <li @click="switchTo('/shoppingcart')">购物车</li>
-          <li @click="switchTo('/me')">我的订单</li>
+          <li @click="switchTo('/me')">个人中心</li>
           <!-- <li @click="switchTo('/manager')">管理员通道</li> -->
           <li v-if="userInfo.id" class="signup" @click="dealLogout">
             退出登录

@@ -229,17 +229,17 @@ export default {
     if (result.success_code === 200) {
       commit(ORDER_LIST, { orderlist: result.message });
     }
-  },
+  }
 
   //获取单个订单详情数据
-  async reqSingleOrders({ commit }, { orderNo }) {
-    console.log(orderNo);
-    const result = await getSingleOrders(orderNo);
-    console.log(result);
-    if (result.success_code === 200) {
-      commit(GET_SINGLE_ORDERS, { singleorders: result.message });
-    }
-  }
+  // async reqSingleOrders({ commit }, { orderNo }) {
+  //   console.log(orderNo);
+  //   const result = await getSingleOrders(orderNo);
+  //   console.log(result);
+  //   if (result.success_code === 200) {
+  //     commit(GET_SINGLE_ORDERS, { singleorders: result.message });
+  //   }
+  // }
   // getSingleOrders({ commit }, { orderNo }) {
   //   commit(GET_SINGLE_ORDERS, { orderNo });
   // }

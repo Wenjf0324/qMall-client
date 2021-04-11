@@ -204,7 +204,7 @@ export default new VueRouter({
     {
       path: "/me",
       component: Me,
-      meta: { showNavHeader: false, showFooter: true }
+      meta: { showNavHeader: false, showFooter: false }
     },
     {
       path: "/manager",

@@ -51,6 +51,7 @@ Vue.use(VueRouter);
 export default new VueRouter({
   //3.1配置一级路由
   routes: [
+    //默认路由
     {
       path: "/",
       redirect: "/home"

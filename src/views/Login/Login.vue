@@ -159,7 +159,7 @@ import { getPhoneCode, phoneCodeLogin, pwdLogin } from "../../api/index";
 import { Message } from "element-ui";
 import { mapActions } from "vuex";
 export default {
-  name: "Home",
+  name: "login",
   components: {
     Logo
   },

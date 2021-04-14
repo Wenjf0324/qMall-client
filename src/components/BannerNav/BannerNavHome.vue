@@ -14,21 +14,28 @@
             <div class="kind-list">
               <ul>
                 <li
-                  v-for="(p, index) in petList"
-                  :key="index"
-                  :class="{ selected: index === currentIndex }"
-                  @mouseenter="currentIndex = index"
+                  :class="{ selected: selectPets }"
+                  @mouseenter="showPetsMenu(true)"
                 >
                   <svg class="icon" aria-hidden="true">
-                    <use :xlink:href="p.icon"></use>
+                    <use xlink:href="#icon-gougou"></use>
                   </svg>
-                  <p>{{ p.name }}</p>
+                  <p>狗狗</p>
+                </li>
+                <li
+                  :class="{ selected: !selectPets }"
+                  @mouseenter="showPetsMenu(false)"
+                >
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-maomi"></use>
+                  </svg>
+                  <p>猫咪</p>
                 </li>
               </ul>
             </div>
 
             <div class="shop-list">
-              <ul class="dog-list" v-show="currentIndex === 0">
+              <ul class="dog-list" v-show="selectPets">
                 <li
                   v-for="(item, index) in dog_list"
                   :key="index"
@@ -41,7 +48,7 @@
                 </li>
               </ul>
 
-              <ul class="dog-list" v-show="currentIndex === 1">
+              <ul class="dog-list" v-show="!selectPets">
                 <li
                   v-for="(item, index) in cat_list"
                   :key="index"
@@ -73,12 +80,9 @@ export default {
   data() {
     return {
       currentIndex: 0,
+      selectPets: true, //判断选择了狗狗还是猫咪，true 狗狗，false 猫咪
       menuIndex: 0,
       menuVisible: false,
-      petList: [
-        { name: "狗狗", icon: "#icon-gougou" },
-        { name: "猫咪", icon: "#icon-maomi" }
-      ],
       dog_list: [
         { name: "狗狗主粮", icon: "#icon-zhushi", path: "/dog/food" },
         { name: "狗狗零食", icon: "#icon-lingshi1", path: "/dog/snacks" },
@@ -99,6 +103,9 @@ export default {
     switchTo(path) {
       //console.log(this.$router)
       this.$router.replace(path);
+    },
+    showPetsMenu(flag) {
+      this.selectPets = flag;
     }
   }
 };
@@ -106,7 +113,6 @@ export default {
 
 <style lang="stylus" scoped>
 .banner-nav
-
     .wrap
         display flex
     .banner-nav-left
@@ -126,16 +132,16 @@ export default {
               font-size 24px
               margin-right 8px
     .banner-nav-right
-        ul
-            display flex
-            margin-left 8px
-            height 36px
-            line-height 36px
-            li
-                padding 0 24px
-                &:hover
-                    cursor pointer
-                    color #20bfa9
+      ul
+        display flex
+        margin-left 8px
+        height 36px
+        line-height 36px
+        li
+          padding 0 24px
+          &:hover
+            cursor pointer
+            color #20bfa9
 
 .menu-list
   display flex
@@ -164,26 +170,26 @@ export default {
       background #fff
       position absolute
       ul
-          height 428px
-          border 1px solid #e1e1e1
-          display flex
-          flex-wrap wrap
-          justify-content center
+        height 428px
+        border 1px solid #e1e1e1
+        display flex
+        flex-wrap wrap
+        justify-content center
       li
-          width 100%
-          display flex
-          justify-content center
-          align-items center
-          border-bottom 1px dashed #e1e1e1
-          .icon
-              color #444
-              margin-right 8px
-              font-size 24px
-          &:hover
-              cursor pointer
-              color #20bfa9
-              border-top 1px solid #20bfa9
-              border-bottom 1px solid #20bfa9
-          &:last-child
-            border-bottom none
+        width 100%
+        display flex
+        justify-content center
+        align-items center
+        border-bottom 1px dashed #e1e1e1
+        .icon
+          color #444
+          margin-right 8px
+          font-size 24px
+        &:hover
+          cursor pointer
+          color #20bfa9
+          border-top 1px solid #20bfa9
+          border-bottom 1px solid #20bfa9
+        &:last-child
+          border-bottom none
 </style>

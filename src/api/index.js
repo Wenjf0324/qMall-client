@@ -62,6 +62,28 @@ export const getUserInfo = () => ajax(BASE_URL + "/api/user_info");
 //2.14退出登录
 export const getLogout = () => ajax(BASE_URL + "/api/logout");
 
+//修改用户信息
+export const changeUserInfo = (
+  user_id,
+  user_name,
+  user_gender,
+  user_address,
+  user_birthday,
+  user_sign
+) =>
+  ajax(
+    BASE_URL + "/api/change_user_info",
+    {
+      user_id,
+      user_name,
+      user_gender,
+      user_address,
+      user_birthday,
+      user_sign
+    },
+    "POST"
+  );
+
 //2.15加入购物车
 export const addGoodsToCart = (
   user_id,

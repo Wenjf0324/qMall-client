@@ -6,9 +6,7 @@
           <span>欢迎访问Q宠商城！</span>
         </div>
         <ul class="topbar-user">
-          <li v-if="userInfo.id">
-            您好，{{ userInfo.user_name || userInfo.user_phone | phoneFormat }}
-          </li>
+          <li v-if="userInfo.id">您好，{{ userName | phoneFormat }}</li>
           <li @click="switchTo('/login')" v-if="!userInfo.id">登录</li>
           <li @click="switchTo('/shoppingcart')">购物车</li>
           <li @click="switchTo('/me')">个人中心</li>
@@ -67,22 +65,35 @@ export default {
     ...mapState(["userInfo", "cartgoods"]),
     cartCount() {
       return this.cartgoods.length;
+    },
+    userName() {
+      if (!this.userInfo.user_phone) {
+        return this.userInfo.user_name;
+      } else {
+        return this.userInfo.user_phone;
+      }
     }
   },
   filters: {
     phoneFormat(phone) {
       //1.转成数组
       let phoneArr = [...phone];
-      //2.遍历
-      let str = "";
-      phoneArr.forEach((item, index) => {
-        if (index === 3 || index === 4 || index === 5 || index === 6) {
-          str += "*";
-        } else {
-          str += item;
-        }
-      });
-      return str;
+      //2.判断数组是否为手机号
+      let zg = /^\d{11}$/;
+      if (!zg.test(phone)) {
+        return phone;
+      } else {
+        //3.遍历
+        let str = "";
+        phoneArr.forEach((item, index) => {
+          if (index === 3 || index === 4 || index === 5 || index === 6) {
+            str += "*";
+          } else {
+            str += item;
+          }
+        });
+        return str;
+      }
     }
   },
   methods: {
@@ -101,15 +112,11 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      })
-        .then(actions => {
-          // console.log(actions);
-          this.logout({});
-          Message.success("退出登录成功！");
-        })
-        .catch(() => {
-          Message("已取消退出登录！");
-        });
+      }).then(actions => {
+        // console.log(actions);
+        this.logout({});
+        Message.success("退出登录成功！");
+      });
     }
   }
 };

@@ -21,7 +21,7 @@
                   :class="{ selected: checkIndex === index }"
                   v-for="(item, index) in singlegoods.img_list"
                   :key="index"
-                  @click.stop="shouImg(index)"
+                  @click.stop="showImg(index)"
                 >
                   <img v-lazy="item" width="100%" />
                 </li>
@@ -177,11 +177,9 @@ export default {
     // }
   },
   methods: {
-    shouImg(index) {
+    showImg(index) {
       this.checkIndex = index;
       this.currentIndex = index;
-      console.log(this.checkIndex);
-      console.log(this.currentIndex);
     },
     changeDetails(flag) {
       this.detailsType = flag;

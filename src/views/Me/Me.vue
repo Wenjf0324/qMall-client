@@ -84,7 +84,7 @@
             </li>
             <li>
               <p>手机</p>
-              <p>{{ userInfo.user_phone | phoneFormat }}</p>
+              <p>{{ userInfo.user_phone || "暂无" | phoneFormat }}</p>
             </li>
             <li>
               <p>昵称</p>
@@ -240,12 +240,20 @@ export default {
       user_sign: "" //个性签名
     };
   },
-  mounted() {
-    this.user_name = this.userInfo.user_name;
-    this.user_gender = this.userInfo.user_gender;
-    this.user_address = this.userInfo.user_address;
-    this.user_birthday = this.userInfo.user_birthday;
-    this.user_sign = this.userInfo.user_sign;
+
+  watch: {
+    //对userInfo进行深度监听，当数据有变化时跟着变化
+    userInfo: {
+      handler() {
+        this.user_name = this.userInfo.user_name || "";
+        this.user_gender = this.userInfo.user_gender || "";
+        this.user_address = this.userInfo.user_address || "";
+        this.user_birthday = this.userInfo.user_birthday || "";
+        this.user_sign = this.userInfo.user_sign || "";
+      },
+      immediate: true,
+      deep: true
+    }
   },
   computed: {
     ...mapState(["userInfo"]),
@@ -259,14 +267,14 @@ export default {
   },
   filters: {
     //手机号显示格式
-    phoneFormat(phone) {
-      //1.转成数组
-      let phoneArr = [...phone];
+    phoneFormat(val) {
       //2.判断数组是否为手机号
       let zg = /^\d{11}$/;
-      if (!zg.test(phone)) {
-        return phone;
+      if (!zg.test(val)) {
+        return val;
       } else {
+        //1.转成数组
+        let phoneArr = [...val];
         //3.遍历
         let str = "";
         phoneArr.forEach((item, index) => {

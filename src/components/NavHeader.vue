@@ -108,7 +108,7 @@ export default {
       }
     },
     dealLogout() {
-      MessageBox.confirm("已登录，确定要退出登录吗？", "提示", {
+      MessageBox.confirm("您确定要退出登录吗？", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -123,7 +123,7 @@ export default {
 </script>
 
 <style lang="stylus">
-
+$color = #20bfa9
 .nav-topbar
   height 32px
   line-height 32px
@@ -141,7 +141,7 @@ export default {
             cursor pointer
             border-right 1px solid #e1e1e1
             &:hover
-                color #20bfa9
+                color $color
                 background #e1e1e1
             &.signup:hover
                 color red
@@ -157,7 +157,7 @@ export default {
       top: 50%;
       transform: translate(-50%, -50%);
       form
-        border 2px solid #20bfa9
+        border 2px solid $color
         border-radius: 2px;
         width: 500px;
         display: flex;
@@ -168,9 +168,9 @@ export default {
           &:focus
             outline none
         button
-          border 1px solid #20bfa9
-          outline 1px solid #20bfa9
-          background #20bfa9
+          border 1px solid $color
+          outline 1px solid $color
+          background $color
           color #fff
           padding 8px 16px
           font-size 14px

@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="banner-nav">
+    <div class="nav-box">
       <div class="wrap">
-        <div class="banner-nav-left">
+        <div class="nav-left">
           <div
-            class="menu"
+            class="category"
             @mouseenter="showMenu(true)"
             @mouseleave="showMenu(false)"
           >
@@ -13,9 +13,12 @@
             </svg>
             <span>商品分类</span>
 
-            <div class="menu-list-container" v-show="show_menu === true">
-              <div class="menu-list">
-                <div class="kind-list">
+            <div
+              class="menu-container"
+              :class="{ isvisible: show_menu === true }"
+            >
+              <div class="menu">
+                <div class="pet-list">
                   <ul>
                     <li
                       v-for="(p, index) in petList"
@@ -111,14 +114,14 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
-.banner-nav
+<style lang="stylus">
+.nav-box
     border-bottom 2px solid #20bfa9
     .wrap
         display flex
-    .banner-nav-left
+    .nav-left
         width 220px
-        .menu
+        .category
             width 220px
             height 36px
             color #fff
@@ -131,48 +134,61 @@ export default {
             letter-spacing 8px
             position relative
             cursor pointer
-
             .icon
               font-size 24px
               margin-right 8px
-            .menu-list-container
-
-              .menu-list
-                  overflow hidden
+            .menu-container
+              overflow hidden
+              position absolute
+              top 36px
+              left -55px
+              height 0
+              opacity 0
+              transition all 250ms
+              &.isvisible
+                opacity 1
+                height 300px
+              .menu
                   font-weight normal
                   letter-spacing 0
                   display flex
-                  position absolute
-                  top 36px
-                  left -54px
-                  .kind-list
+                  height 100%
+                  .pet-list
                       width 54px
                       li
-                          font-size 14px
-                          border: 1px solid rgba(0, 0, 0, 0.3);
-                          padding 20px 0
+                          font-size 13px
+                          border 1px solid #e1e1e1
+                          padding 8px 0
                           text-align center
                           color rgba(0, 0, 0, 0.3)
-                          background rgba(0,0,0,0.3)
+                          background #e1e1e1
                           cursor pointer
                           &.selected
                               background #fff
                               color #333
                           .icon
                               font-size 25px
-                              margin-bottom 4px
+                              margin 0 0 4px 2px
 
                   .shop-list
                       width 220px
+                      height 100%
                       color #333
                       font-size 15px
                       background #fff
                       ul
+                          height inherit
                           border 1px solid #20bfa9
+                          display flex
+                          flex-wrap wrap
+                          justify-content center
                       li
-                          padding 25px 0
                           text-align center
                           border-bottom 1px dashed #e1e1e1
+                          width 100%
+                          display flex
+                          justify-content center
+                          align-items center
                           .icon
                               color #444
                               margin-right 8px

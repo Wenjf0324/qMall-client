@@ -9,7 +9,7 @@
         <div class="aside">
           <div class="aside-title">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-tuijian"></use>
+              <use xlink:href="#icon-dog"></use>
             </svg>
             <span>狗狗专区</span>
           </div>
@@ -67,14 +67,15 @@ export default {
     width 180px
     float left
     .aside-title
+      text-align center
       font-size 15px
       background #000
       border-radius 50px
       color #fff
-      padding 10px 28px
+      padding 12px 28px
       .icon
         font-size 20px
-        margin-right 8px
+        margin-right 4px
     .aside-menu
       margin 10px 24px
       color #666

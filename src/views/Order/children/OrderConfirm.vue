@@ -126,52 +126,54 @@
       @cancel="showEditModal = false"
     >
       <template v-slot:body>
+        <!-- 插槽内容 -->
         <div class="edit-wrap">
           <div class="item">
-            <input
-              type="text"
-              placeholder="姓名"
-              v-model="checkItem.rec_name"
-            />
-            <input
-              type="text"
-              placeholder="手机号"
-              maxlength="11"
+            <Input v-model="checkItem.rec_name" placeholder="姓名" />
+            <Input
               v-model="checkItem.rec_phone"
+              placeholder="联系方式"
+              maxlength="11"
             />
           </div>
           <div class="item">
-            <select name="province" v-model="checkItem.rec_province">
-              <option value="广东省">广东省</option>
-              <option value="上海省">上海省</option>
-              <option value="北京省">北京省</option>
-              <option value="天津省">天津省</option>
-              <option value="河北省">河北省</option>
-            </select>
-            <select name="city" v-model="checkItem.rec_city">
-              <option value="广州市">广州市</option>
-              <option value="中山市">中山市</option>
-              <option value="北京市">北京市</option>
-              <option value="深圳市">深圳市</option>
-              <option value="石家庄">石家庄</option>
-            </select>
-            <select name="district" v-model="checkItem.rec_district">
-              <option value="天河区">天河区</option>
-              <option value="海珠区">海珠区</option>
-              <option value="番禺区">番禺区</option>
-              <option value="白云区">白云区</option>
-              <option value="五桂山镇">五桂山镇</option>
-            </select>
+            <Select
+              name="province"
+              v-model="checkItem.rec_province"
+              placeholder="省"
+            >
+              <Option value="广东省">广东省</Option>
+              <Option value="湖南省">湖南省</Option>
+              <Option value="河北省">河北省</Option>
+            </Select>
+            <Select name="city" v-model="checkItem.rec_city" placeholder="市">
+              <Option value="广州市">广州市</Option>
+              <Option value="深圳市">深圳市</Option>
+              <Option value="中山市">中山市</Option>
+              <Option value="佛山市">佛山市</Option>
+              <Option value="肇庆市">肇庆市</Option>
+            </Select>
+            <Select
+              name="district"
+              v-model="checkItem.rec_district"
+              placeholder="区"
+            >
+              <Option value="天河区">天河区</Option>
+              <Option value="海珠区">海珠区</Option>
+              <Option value="番禺区">番禺区</Option>
+              <Option value="白云区">白云区</Option>
+              <Option value="五桂山镇">五桂山镇</Option>
+            </Select>
           </div>
           <div class="item">
-            <textarea
-              name="street"
+            <Input
+              type="textarea"
               placeholder="详细地址"
               v-model="checkItem.rec_address"
-            ></textarea>
+            />
           </div>
           <div class="item">
-            <input type="text" placeholder="邮编" v-model="checkItem.rec_zip" />
+            <Input v-model="checkItem.rec_zip" placeholder="邮编" />
           </div>
         </div>
       </template>
@@ -181,7 +183,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { Message, MessageBox } from "element-ui";
+import { Message, Input, Select, Option } from "element-ui";
 import { addAddress, updateAddress, addOrders } from "../../../api/index";
 import OrderHeader from "../../../components/OrderHeader";
 import Modal from "../../../components/Modal";
@@ -189,7 +191,10 @@ export default {
   name: "orderConfirm",
   components: {
     OrderHeader,
-    Modal
+    Modal,
+    Input,
+    Select,
+    Option
   },
   data() {
     return {
@@ -300,7 +305,8 @@ export default {
       }
       if (userAction === 0) {
         //新增地址
-        this.$store.dispatch("addAddressSingle", { checkItem });
+        this.$store.dispatch("addAddressSingle", { checkItem }); //修改vuex中的状态
+        //更新数据库表
         const result = await addAddress(
           rec_name,
           rec_phone,
@@ -358,7 +364,7 @@ export default {
       //拼接收货地址
       let addressInfo = `${addressItem.rec_province} ${addressItem.rec_city} ${addressItem.rec_district} ${addressItem.rec_address}`;
 
-      console.log(this.totalPrice);
+      // console.log(this.totalPrice);
       //提交订单并删除购物车数据
       let result = await addOrders(
         orderNo,
@@ -367,7 +373,7 @@ export default {
         addressInfo,
         this.totalPrice
       );
-      console.log(result);
+      // console.log(result);
       if (result.success_code === 200) {
         //跳转页面
         this.$router.push({
@@ -414,35 +420,20 @@ export default {
     font-size 14px
     .item
       margin-bottom 15px
-      input
-        display inline-block
+      .el-input
         width 280px
-        height 40px
-        line-height 40px
-        padding-left 15px
-        border 1px solid #e1e1e1
-        border-radius 4px
         &:nth-child(2)
           margin-left 14px
+      input
         &:focus
-          outline none
-      select
-        height 40px
-        line-height 40px
-        border 1px solid #e1e1e1
-        margin-right 15px
-        padding 0 15px
-        background #fff
-        &:focus
-          outline none
+          border 1px solid #20bfa9
+      .el-select
+        .el-input
+          width 120px
+          margin-right 16px
       textarea
-        height 62px
-        width 100%
-        padding 13px 15px
-        box-sizing border-box
-        border 1px solid #e1e1e1
         &:focus
-          outline none
+          border 1px solid #20bfa9
 
   .confirm-container
     width 1190px

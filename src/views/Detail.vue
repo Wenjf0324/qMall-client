@@ -5,13 +5,30 @@
       <div class="detail-left">
         <div class="intro">
           <div class="img-box">
-            <div class="big-img">
+            <!-- 放大镜特效的小容器 -->
+            <div class="big-img small-box">
+              <!-- 可移动的放大镜 -->
+              <div class="float-box"></div>
               <ul class="bigimg-list">
                 <li v-for="(item, index) in singlegoods.img_list" :key="index">
-                  <img :src="item" width="100%" v-if="currentIndex === index" />
+                  <img :src="item" v-if="currentIndex === index" />
                 </li>
               </ul>
             </div>
+            <!-- 放大镜特效的大容器 -->
+            <div class="big-box">
+              <div class="wrapper">
+                <ul class="bigimg-list">
+                  <li
+                    v-for="(item, index) in singlegoods.img_list"
+                    :key="index"
+                  >
+                    <img :src="item" v-if="currentIndex === index" />
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- 小图片列表 -->
             <div class="small-img">
               <div class="prebtn"></div>
               <div class="nextbtn"></div>
@@ -52,12 +69,11 @@
                 </span>
               </p>
             </div>
-            <div class="buy">
-              <router-link to="/order/confirm">立即购买</router-link>
-              <!-- <router-link to="/shoppingcart" @click="addCart(singlegoods)"
-                >加入购物车</router-link
-              > -->
-              <button @click="addCart(singlegoods)">加入购物车</button>
+            <div class="addcartBtn">
+              <div class="wrapper"></div>
+              <button class="wrapper" @click="addCart(singlegoods)">
+                加入购物车
+              </button>
             </div>
             <div class="collection">
               <svg class="icon" aria-hidden="true">
@@ -106,24 +122,24 @@
           <li>
             <img src="../assets/images/shop_list/cat/goods1.jpg" width="100%" />
             <div class="desc">
-              <p>法国皇家Royal Canin 小型犬幼犬离乳期奶糕粮 1kg</p>
-              <p class="price">￥69.2</p>
+              <p>怡亲 成猫粮专用粮2.5KG</p>
+              <p class="price">￥69.00</p>
               <router-link to="/detail">立即购买</router-link>
             </div>
           </li>
           <li>
             <img src="../assets/images/shop_list/dog/goods3.jpg" width="100%" />
             <div class="desc">
-              <p>法国皇家Royal Canin 小型犬幼犬离乳期奶糕粮 1kg</p>
-              <p class="price">￥69.2</p>
+              <p>风来客 毫棒混合装洁齿磨牙骨咬胶狗零食2寸 270g（30只装）</p>
+              <p class="price">￥17.60</p>
               <router-link to="/detail">立即购买</router-link>
             </div>
           </li>
           <li>
             <img src="../assets/images/shop_list/dog/goods1.jpg" width="100%" />
             <div class="desc">
-              <p>法国皇家Royal Canin 小型犬幼犬离乳期奶糕粮 1kg</p>
-              <p class="price">￥69.2</p>
+              <p>宝路Pedigree 牛肉肝蔬菜中小型成犬粮 7.5kg</p>
+              <p class="price">￥149.00</p>
               <router-link to="/detail">立即购买</router-link>
             </div>
           </li>
@@ -242,34 +258,72 @@ export default {
     justify-content space-between
     padding-top 60px
     .detail-left
-      width 890px
+      width 930px
       border-right 1px solid #e1e1e1
       .intro
-        margin-bottom 35px
+        margin-bottom 50px
         display flex
         .img-box
-          width 375px
+          width 400px
+          border 1px solid #e1e1e1
+          padding 20px 20px 0
+          position relative
+          .small-box
+            .float-box
+              display none
+              width 160px
+              height 120px
+              position absolute
+              border 1px solid #ccc
+              background #ffffcc
+              opacity 0.5
+              cursor move
+              z-index 10
+          .big-box
+            display none
+            width 400px
+            height 400px
+            border 1px solid #ccc
+            position absolute
+            top 0
+            left 400px
+            overflow hidden
+            z-index 10
+            .wrapper
+              width 400px
+              height 300px
+              position relative
+              img
+                transform scale(2.5)
+                transform-origin  0 0
+                position absolute
+                top 0
+                left 0
+
           .big-img
-            height 375px
-            border 1px solid #e1e1e1
-            margin-bottom 12px
+            height inherit
             img
+              width 360px
               vertical-align top
           .small-img
             overflow hidden
+            margin 16px 0
             .smallImg-list
               display flex
               li
                 border 1px solid #e1e1e1
-                margin-right 6px
+                margin-right 10px
+                cursor pointer
+                &:hover
+                  border 1px solid #f60
               .selected
-                border 1px solid #ed462f
+                border 1px solid #f60
             img
-              width 64px
+              width 55px
               vertical-align top
         .summary
-          width 420px
-          margin 6px 0 0 50px
+          width 435px
+          margin 6px 0 0 45px
           h1
             font-weight normal
             font-size 22px
@@ -283,12 +337,11 @@ export default {
             border-bottom 1px dashed #e1e1e1
             margin-top 16px
             padding 12px 0
-
           .description
             font-size 14px
             color #666
             p
-              margin 26px 0
+              margin 30px 0
               .num-box
                 display inline-block
                 border 1px solid #e1e1e1
@@ -308,38 +361,33 @@ export default {
               .sumTit
                 display inline-block
                 width 80px
-          .buy
-             a
-              width: 130px;
-              text-align: center;
-              padding: 12px 0;
-              margin-right 8px
-              display inline-block
-              &:first-child
-                background #000
-                color: #fff;
-              &:last-child
-                border 1px solid #f60
-                color #f60
+          .addcartBtn
+            position relative
+            width 200px
+            height 46px
+            background #f60
+            .wrapper
+              height inherit
+              position absolute
+              top 0
+              left 0
+              &:hover
+                background rgba(255,255,255,0.1)
             button
-                width: 130px;
-                text-align: center;
-                padding: 12px 0;
-                margin-right 8px
+                width 200px
+                padding 12px 0
                 display inline-block
-                background #fff
+                border none
+                background #f60
+                color #fff
+                font-size 16px
+                cursor pointer
                 &:focus
                   outline none
-                &:first-child
-                  background #000
-                  color: #fff;
-                &:last-child
-                  border 1px solid #f60
-                  color #f60
           .collection
             color #666
             font-size 14px
-            margin 18px 0
+            margin 30px 0
       .intro-details
         .details-nav
           margin 24px
@@ -371,25 +419,28 @@ export default {
             padding-top 14px
             display block
     .detail-right
-      width 250px
+      width 220px
       .recommend-title
         font-size 15px
         background #000
         border-radius 50px
         color #fff
-        padding 18px 28px
+        padding 12px 28px
         .icon
           font-size 20px
           margin-right 8px
       .recommend-list
-        margin-top 24px
+        margin-top 12px
         li
-          margin-bottom 16px
-          padding 6px 0
+          padding 10px 0
           display flex
           align-items center
+          border-bottom 1px dashed #e1e1e1
+          &:last-child
+            border-bottom none
           img
             width 82px
+            cursor pointer
           .desc
             margin-left 8px
             overflow hidden
@@ -398,8 +449,11 @@ export default {
               text-overflow ellipsis
               white-space nowrap
               &:first-child
-                color #666
+                color #999
                 font-size 12px
+                cursor pointer
+                &:hover
+                  color #666
             .price
               color #ed462f
               margin 10px 0

@@ -28,6 +28,8 @@
           v-for="(item, index) in shop_list"
           :key="index"
         >
+          <!-- 点击跳转到商品详情页 -->
+          <!-- `/detail/${item.goods_id}`是动态路由表示将商品id传给商品详情页  -->
           <img
             @click="getGoodsInfoAndSwitchTo(item, `/detail/${item.goods_id}`)"
             v-lazy="item.img_url"
@@ -138,16 +140,18 @@ export default {
 
 <style lang="stylus" scoped>
 .shop-container
-    margin-bottom 32px
+    margin-bottom 40px
     .shop-list-title
         display flex
         justify-content space-between
         border-bottom 2px solid #333
         h2
-            font-size 26px
+            font-size 24px
             color #333
             font-weight normal
             padding 8px 0 8px 6px
+            .icon
+              font-size 26px
         ul
             display flex
             align-items flex-end
@@ -175,14 +179,15 @@ export default {
 
 
     .shop-list
+        border 1px solid #e1e1e1
+        padding 10px
         display flex
         flex-wrap wrap
-        margin-right -16px
+        justify-content space-between
         .shop-list-item
-          width 225px
-          margin 0 16px 16px 0
+          width 217.5px
           padding 8px
-          border 1px solid #e7e7e7
+          margin 8px
           background #fff
           transition all 0.2s linear
           img, p
@@ -191,11 +196,11 @@ export default {
             transform translateY(-2px)
             box-shadow 0 0 5px 3px rgba(0,0,0,.1)
           .list-item-title
-              margin 6px 0
-              font-size 12px
+              margin 10px 0
+              font-size 13px
               color #666
               line-height 1.5em
-              height 36px
+              height 40px
               overflow hidden
               text-overflow ellipsis
               display -webkit-box
@@ -208,12 +213,13 @@ export default {
                 font-size 16px
                 font-weight bold
                 display inline-block
-                margin 8px 0
+                margin-bottom 8px
             .icon
               color #e31436
               font-size 18px
               margin-left 4px
               cursor pointer
+              transition all 0.2s
               &:hover
-                transform translateX(1px)
+                transform translateX(2px)
 </style>

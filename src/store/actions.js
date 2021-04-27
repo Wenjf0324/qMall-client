@@ -141,12 +141,13 @@ export default {
   //异步获取用户信息
   async getUserInfo({ commit }) {
     const result = await getUserInfo();
+    console.log(result);
     if (result.success_code === 200) {
       commit(USER_INFO, { userInfo: result.message });
     }
   },
 
-  //退出登录（清空获取用户信息）
+  //退出登录（清空用户信息）
   async logout({ commit }) {
     const result = await getLogout();
     console.log(result);
@@ -210,7 +211,7 @@ export default {
   //单个收货地址的删除
   async delAddressSingle({ commit }, { checkItem }) {
     commit(DEL_SINGLE_ADDRESS, { checkItem });
-    console.log(checkItem);
+    // console.log(checkItem);
     const result = await delAddressSingle(checkItem.rec_id);
     if (result.success_code === 200) {
       Message.success("操作成功");

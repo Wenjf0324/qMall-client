@@ -51,6 +51,7 @@
                   placeholder="验证码"
                   v-model="code"
                 />
+                <!-- 动态绑定类phone_right，当手机号码正确时此按钮高亮显示 -->
                 <button
                   v-if="!countDown"
                   class="get-verification"
@@ -82,7 +83,7 @@
                 <input
                   type="text"
                   maxlength="11"
-                  placeholder="用户名/手机"
+                  placeholder="用户名"
                   v-model="user_name"
                 />
               </section>
@@ -91,6 +92,7 @@
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-password"></use>
                 </svg>
+                <!-- 密文 -->
                 <input
                   type="password"
                   maxlength="18"
@@ -98,6 +100,7 @@
                   v-if="pwdMode"
                   v-model="pwd"
                 />
+                <!-- 明文 -->
                 <input
                   type="text"
                   maxlength="18"
@@ -135,6 +138,8 @@
                   placeholder="验证码"
                   v-model="captcha"
                 />
+                <!-- 图形验证码 -->
+                <!-- 图形验证码每刷新一次变换一次，每点击一次变换一次 -->
                 <img
                   class="code"
                   ref="captcha"
@@ -181,6 +186,7 @@ export default {
     phoneRight() {
       return /^[1][3,4,5,7,8][0-9]{9}$/.test(this.phone);
     }
+    //验证用户名是否合理
   },
   methods: {
     ...mapActions(["syncUserInfo"]),
@@ -209,6 +215,7 @@ export default {
         //提示信息
         Message.error(result.message);
         //其他处理
+        // this.countDown = 0;
       }
     },
     //3.密码的显示方式
@@ -254,7 +261,7 @@ export default {
         //账号密码登录
         //5.4前端校验
         if (!this.user_name) {
-          Message.error("请输入用户名/手机！");
+          Message.error("请输入用户名！");
           return;
         } else if (!this.pwd) {
           Message.error("请输入密码！");

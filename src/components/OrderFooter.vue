@@ -40,7 +40,7 @@ export default {
   background #fff
   width 100%
   .container
-    height 80px
+    height 70px
     display flex
     justify-content center
     align-items center

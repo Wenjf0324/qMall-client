@@ -35,10 +35,21 @@
         </div>
       </div>
     </div>
+
     <!-- 商品列表 -->
     <div class="pruduct-box">
-      <DogShopList />
-      <CatShopList />
+      <ProductList
+        title_icon="#icon-dog"
+        title="狗狗专区"
+        :menu_nav="dog_nav"
+        :shop_list="dogrecommend"
+      />
+      <ProductList
+        title_icon="#icon-cat"
+        title="猫咪专区"
+        :menu_nav="cat_nav"
+        :shop_list="catrecommend"
+      />
     </div>
   </div>
 </template>
@@ -46,20 +57,33 @@
 <script>
 import Swiper from "swiper";
 import "swiper/dist/css/swiper.min.css";
-import BannerNavHome from "../../components/BannerNav/BannerNavHome";
-import DogShopList from "./children/DogShopList";
-import CatShopList from "./children/CatShopList";
-
 import { mapState } from "vuex";
+import BannerNavHome from "../components/BannerNav/BannerNavHome";
+import ProductList from "../components/PruductList";
 
 export default {
   name: "Home",
+  components: { BannerNavHome, ProductList },
   data() {
-    return {};
+    return {
+      dog_nav: [
+        { name: "主食", path: "/dog/food" },
+        { name: "零食", path: "/dog/snacks" },
+        { name: "日用", path: "/dog/daily" },
+        { name: "医疗", path: "/dog/health" },
+        { name: "玩具", path: "/dog/toy" }
+      ],
+      cat_nav: [
+        { name: "主食", path: "/cat/food" },
+        { name: "零食", path: "/cat/snacks" },
+        { name: "日用", path: "/cat/daily" },
+        { name: "医疗", path: "/cat/health" },
+        { name: "玩具", path: "/cat/toy" }
+      ]
+    };
   },
-  components: { BannerNavHome, DogShopList, CatShopList },
   computed: {
-    ...mapState(["homecasual", "userInfo"])
+    ...mapState(["homecasual", "userInfo", "dogrecommend", "catrecommend"])
   },
   mounted() {
     //1.请求轮播图的数据
@@ -76,11 +100,13 @@ export default {
       //数据完全请求下来之后再创建swiper实例
       this.$nextTick(() => {
         new Swiper(".swiper-container", {
+          loop: true, //循环
+          autoplay: true, //自动轮播
+
           pagination: {
+            //分页器
             el: ".swiper-pagination"
-          },
-          loop: true,
-          autoplay: true
+          }
         });
       });
     }
@@ -97,7 +123,7 @@ export default {
 <style lang="stylus" scoped>
 .home
     .banner
-        background #20bfa9
+        background #01d4b4
         height 428px
         .wrap
             display flex
@@ -135,7 +161,6 @@ export default {
                         cursor pointer
                         &:hover
                             border 1px solid #20bfa9
-                            // color #20bfa9
                             background #20bfa9
                             color #fff
                         &.signup:hover
@@ -143,5 +168,5 @@ export default {
                             background red
                             color #fff
     .pruduct-box
-      margin 40px 0
+      margin 40px 0 60px 0
 </style>

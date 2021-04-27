@@ -13,7 +13,7 @@ import Manager from "../views/Manager/Manager";
 // import Order from "../views/Order/Order";
 
 //配置一级路由的路由组件懒加载
-const Home = () => import("../views/Home/Home");
+const Home = () => import("../views/Home");
 const Dog = () => import("../views/Dog/Dog");
 const Cat = () => import("../views/Cat/Cat");
 const Login = () => import("../views/Login/Login");

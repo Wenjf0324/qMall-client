@@ -34,7 +34,7 @@
   background #f5f5f5
   width 100%
   .container
-    height 80px
+    height 70px
     display flex
     justify-content center
     align-items center

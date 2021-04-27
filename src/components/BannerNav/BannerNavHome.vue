@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="banner-nav">
+    <div class="home-banner-nav">
       <div class="wrap">
         <div class="banner-nav-left">
           <div class="menu">
@@ -79,10 +79,7 @@
 export default {
   data() {
     return {
-      currentIndex: 0,
-      selectPets: true, //判断选择了狗狗还是猫咪，true 狗狗，false 猫咪
-      menuIndex: 0,
-      menuVisible: false,
+      selectPets: true, //判断选择了狗狗还是猫咪，true 狗狗，false 猫咪s
       dog_list: [
         { name: "狗狗主粮", icon: "#icon-zhushi", path: "/dog/food" },
         { name: "狗狗零食", icon: "#icon-lingshi1", path: "/dog/snacks" },
@@ -111,8 +108,8 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
-.banner-nav
+<style lang="stylus">
+.home-banner-nav
     .wrap
         display flex
     .banner-nav-left
@@ -161,7 +158,7 @@ export default {
         background #fff
         color #333
       .icon
-        font-size 25px
+        font-size 26px
         margin-bottom 4px
   .shop-list
       width 220px

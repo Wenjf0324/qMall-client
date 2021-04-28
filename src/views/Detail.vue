@@ -114,27 +114,29 @@
             <ul class="details-nav">
               <li
                 :class="{ selected: detailsType }"
-                @click="changeDetails(true)"
+                @mouseover="changeDetails(true, '0')"
               >
                 详细信息
               </li>
               <li
                 :class="{ selected: !detailsType }"
-                @click="changeDetails(false)"
+                @mouseover="changeDetails(false, '-820')"
               >
                 用户评价
               </li>
             </ul>
             <div class="details-content">
-              <img
-                v-lazy="singlegoods.detail_img"
-                width="100%"
-                class="details-item"
-                :class="{ current: detailsType }"
-              />
-              <p class="details-item" :class="{ current: !detailsType }">
-                目前还未有评论<br />只有买过此商品的客户登录后才能发表评论
-              </p>
+              <div class="details-wrapper" ref="detailsWrapper">
+                <img
+                  v-lazy="singlegoods.detail_img"
+                  width="100%"
+                  class="details-item"
+                  ref="detailsImg"
+                />
+                <p class="details-item" ref="detailsCommits">
+                  目前还未有评论<br />只有买过此商品的客户登录后才能发表评论
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -248,6 +250,7 @@ export default {
   mounted() {
     //请求狗狗推荐列表
     this.$store.dispatch("reqDogRecommend");
+
     //请求猫咪推荐列表
     this.$store.dispatch("reqCatRecommend");
   },
@@ -338,8 +341,18 @@ export default {
       this.checkIndex = index;
       this.currentIndex = index;
     },
-    changeDetails(flag) {
-      this.detailsType = flag;
+    changeDetails(flag, distance) {
+      this.detailsType = flag; //切换菜单
+      let detailsWrapper = this.$refs.detailsWrapper; //遮罩层
+      let detailsImg = this.$refs.detailsImg; //详情图片
+      let detailsCommits = this.$refs.detailsCommits; //评论
+      detailsWrapper.style.transform = `translateX(${distance}px)`; //移动详情内容
+      //动态修改详情内容区高度
+      if (this.detailsType) {
+        detailsWrapper.style.height = detailsImg.offsetHeight + "px";
+      } else {
+        detailsWrapper.style.height = detailsCommits.offsetHeight + "px";
+      }
     },
     //单个商品的增加和减少
     updateGoodsCount(isAdd) {
@@ -564,7 +577,7 @@ export default {
           li
             font-size 14px
             color #666
-            padding 18px 32px
+            padding 18px 48px 18px 40px
             cursor pointer
             &.selected
               color #000
@@ -574,17 +587,24 @@ export default {
         .details-content
           width 790px
           margin 24px auto
+          overflow hidden
+          position relative
+          .details-wrapper
+            width  1610px
+            transition all .8s
+            height auto
           .details-item
-            display none
-          .current
-            display block
+            width 790px
+            display inline-block
           p
             color #666
             font-size 13px
             line-height 20px
             border-top 3px solid #ececec
             padding-top 14px
-            display block
+            position absolute
+            top 0
+            left 820px
     .detail-right
       width 230px
       .recommend-title

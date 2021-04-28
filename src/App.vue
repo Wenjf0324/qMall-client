@@ -3,11 +3,11 @@
     <nav-header v-show="$route.meta.showNavHeader" />
 
     <!-- 缓存路由对象数据，购物车保持刷新 -->
-    <keep-alive exclude="shoppingCart,orderConfirm,detail,me,login">
+    <!-- <keep-alive exclude="shoppingCart,orderConfirm,detail,me,login">
       <router-view></router-view>
-    </keep-alive>
+    </keep-alive> -->
 
-    <!-- <router-view></router-view> -->
+    <router-view></router-view>
 
     <Footer v-show="$route.meta.showFooter" />
   </div>

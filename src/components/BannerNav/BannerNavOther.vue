@@ -117,6 +117,7 @@ export default {
 <style lang="stylus">
 .nav-box
     border-bottom 2px solid #20bfa9
+    z-index 20
     .wrap
         display flex
     .nav-left
@@ -145,6 +146,7 @@ export default {
               height 0
               opacity 0
               transition all 250ms
+              z-index 20
               &.isvisible
                 opacity 1
                 height 300px

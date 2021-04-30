@@ -14,14 +14,15 @@
             </svg>
           </div>
           <div class="order-info">
-            <!-- <div>{{ currentOrders }}</div> -->
             <h2>订单提交成功！去付款咯~</h2>
             <p>请在<span>30分钟</span>内完成支付，超时后将取消订单</p>
             <p>收货信息：{{ addressInfo }}</p>
           </div>
           <div class="order-total">
             <p>
-              应付总额：<span>{{ totalPrice | moneyFormat }}</span
+              应付总额：<span>{{
+                currentOrders.total_price | moneyFormat
+              }}</span
               >元
             </p>
             <div>
@@ -35,15 +36,6 @@
                   <use xlink:href="#icon-down"></use>
                 </svg>
               </div>
-              <!-- <div
-                class="icon-detailsbtn"
-                :class="{ hide: isHide }"
-                @click.stop="showDetails()"
-              >
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-up"></use>
-                </svg>
-              </div> -->
             </div>
           </div>
         </div>
@@ -58,9 +50,12 @@
           </div>
           <div class="item">
             <div class="detail-title">商品信息:</div>
-            <ul class="detail-info goods-info" v-if="orderGoodsList.length > 0">
-              <li v-for="(goods, index) in orderGoodsList" :key="index">
-                <img v-lazy="goods.imgurl" alt="" />
+            <ul class="detail-info goods-info">
+              <li
+                v-for="(goods, index) in currentOrders.goodslist"
+                :key="index"
+              >
+                <img v-lazy="goods.thumb_url" alt="" />
                 <p>{{ goods.goods_name }}</p>
               </li>
             </ul>
@@ -105,51 +100,21 @@ export default {
 
     //当前订单号的订单详情
     currentOrders() {
-      let currentorders = [];
+      let currentorders = {};
       if (this.orderlist.length > 0) {
         this.orderlist.forEach((orders, index) => {
           if (orders.order_no === this.orderNo) {
-            currentorders.push(orders);
+            currentorders = orders;
+            console.log(currentorders);
           }
         });
       }
       return currentorders;
     },
 
-    //应付总金额
-    totalPrice() {
-      let total_price = 0;
-      this.currentOrders.forEach((orders, index) => {
-        total_price = orders.total_price;
-      });
-      return total_price;
-    },
-
     //收货人地址
     addressInfo() {
-      let address_info;
-      this.currentOrders.forEach((orders, index) => {
-        address_info =
-          orders.rec_name +
-          " " +
-          orders.rec_phone +
-          " " +
-          orders.rec_addressInfo;
-      });
-      return address_info;
-    },
-
-    //商品列表
-    orderGoodsList() {
-      let goodslist = [];
-      this.currentOrders.forEach((orders, index) => {
-        //临时对象
-        let obj = {};
-        obj.imgurl = orders.thumb_url;
-        obj.goods_name = orders.goods_name;
-        goodslist.push(obj);
-      });
-      return goodslist;
+      return `${this.currentOrders.rec_name} ${this.currentOrders.rec_phone} ${this.currentOrders.rec_addressInfo}`;
     }
   },
   //过滤器
@@ -161,8 +126,7 @@ export default {
     }
   },
   methods: {
-    //根据订单号获取商品详情
-    getOrderDetail() {},
+    //显示、隐藏详情
     showDetails() {
       this.isActive = !this.isActive;
       this.showDetail = !this.showDetail;

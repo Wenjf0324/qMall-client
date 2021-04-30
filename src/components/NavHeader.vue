@@ -38,7 +38,7 @@
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-gouwuche"></use>
           </svg>
-          购物车(<span>{{ cartCount }}</span
+          购物车(<span>{{ cartcount }}</span
           >)
         </div>
       </div>
@@ -58,14 +58,8 @@ export default {
       user_name: ""
     };
   },
-  mounted() {
-    this.$store.dispatch("reqCartGoods");
-  },
   computed: {
-    ...mapState(["userInfo", "cartgoods"]),
-    cartCount() {
-      return this.cartgoods.length;
-    },
+    ...mapState(["userInfo", "cartcount"]),
     userName() {
       if (!this.userInfo.user_phone) {
         return this.userInfo.user_name;
@@ -73,6 +67,10 @@ export default {
         return this.userInfo.user_phone;
       }
     }
+  },
+  mounted() {
+    //获取购物车商品数量
+    this.$store.dispatch("getCartCount");
   },
   filters: {
     phoneFormat(phone) {

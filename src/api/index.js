@@ -119,6 +119,9 @@ export const updateChecked = (goods_id, is_checked) =>
 export const delGoodsSingle = goods_id =>
   ajax(BASE_URL + "/api/del_goods_single", { goods_id }, "POST");
 
+//删除购物车中被选中的数据
+export const updateCartGoods = () => ajax(BASE_URL + "/api/update_cart_goods");
+
 //2.18 请求收货地址列表
 export const getShippingsList = () => ajax(BASE_URL + "/api/shippingslist");
 

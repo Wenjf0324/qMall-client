@@ -23,6 +23,7 @@ import {
   SELECTED_SINGLE_GOODS,
   DEL_SINGLE_GOODS,
   GET_SINGLE_GOODS,
+  CART_COUNT,
   SHIPPINGS_LIST,
   DEL_SINGLE_ADDRESS,
   ADD_SINGLE_ADDRESS,
@@ -146,6 +147,10 @@ export default {
   [DEL_SINGLE_GOODS](state, { goods }) {
     const index = state.cartgoods.indexOf(goods);
     state.cartgoods.splice(index, 1);
+  },
+
+  [CART_COUNT](state, { cartcount }) {
+    state.cartcount = cartcount;
   },
 
   [GET_SINGLE_GOODS](state, { singlegoods }) {

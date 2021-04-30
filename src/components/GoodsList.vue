@@ -97,11 +97,12 @@ export default {
         });
       } else if (result) {
         this.showModal = true;
+        this.$store.dispatch("getCartCount");
       }
     },
     goToCart() {
       this.$router.push("/shoppingcart");
-      this.showModal = fasle;
+      this.showModal = false;
     }
   }
 };

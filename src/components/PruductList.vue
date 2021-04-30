@@ -128,6 +128,7 @@ export default {
         });
       } else if (result) {
         this.showModal = true;
+        this.$store.dispatch("getCartCount");
       }
     },
     goToCart() {

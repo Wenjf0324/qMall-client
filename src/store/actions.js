@@ -47,6 +47,7 @@ import {
   SELECTED_SINGLE_GOODS,
   DEL_SINGLE_GOODS,
   GET_SINGLE_GOODS,
+  CART_COUNT,
   SHIPPINGS_LIST,
   DEL_SINGLE_ADDRESS,
   ADD_SINGLE_ADDRESS,
@@ -198,6 +199,14 @@ export default {
   //获取单个商品的数据，用于商品详情页的展示
   getGoodsSingle({ commit }, { singlegoods }) {
     commit(GET_SINGLE_GOODS, { singlegoods });
+  },
+
+  //记录购物车的数量
+  async getCartCount({ commit }) {
+    const result = await getCartGoods();
+    if (result.success_code === 200) {
+      commit(CART_COUNT, { cartcount: result.message.length });
+    }
   },
 
   //请求收货地址列表数据

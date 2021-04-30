@@ -88,7 +88,7 @@
           <div class="cart-footer-left">
             <router-link to="/">继续购物</router-link>
             <p>
-              共 <span>{{ totalGoodsCount }}</span> 件商品，已选择
+              共 <span>{{ cartcount }}</span> 件商品，已选择
               <span>{{ selectedGoodsCount }}</span> 件
             </p>
           </div>
@@ -97,7 +97,7 @@
               合计：<span>{{ totalPrice | moneyFormat() }}</span
               >元
             </p>
-            <button @click.stop="goToOrder()">去结算</button>
+            <button @click.stop="goToOrder()">选好了</button>
           </div>
         </div>
       </div>
@@ -127,15 +127,10 @@ export default {
   mounted() {
     //请求购物车商品数据
     this.$store.dispatch("reqCartGoods");
-    this.hasSelectedAll();
     this.getAllGoodsPrice();
   },
   computed: {
-    ...mapState(["cartgoods"]), //获取购物车数据
-    totalGoodsCount() {
-      //商品总件数
-      return this.cartgoods.length;
-    },
+    ...mapState(["cartgoods", "cartcount"]), //获取购物车数据
     selectedGoodsCount() {
       //已选择的商品件数
       let goodsCount = 0;
@@ -222,7 +217,7 @@ export default {
         type: "warning"
       }).then(() => {
         this.$store.dispatch("delGoodsSingle", { goods });
-
+        this.$store.dispatch("getCartCount");
         //6.1计算商品的总价格
         this.getAllGoodsPrice();
       });

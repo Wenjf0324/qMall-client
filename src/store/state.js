@@ -33,6 +33,8 @@ export default {
 
   //购物车数据
   cartgoods: [],
+  //购物车数量
+  cartcount:0,
 
   //收货地址数据
   shippingslist: [],

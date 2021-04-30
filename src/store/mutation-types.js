@@ -21,6 +21,7 @@ export const REDUCE_GOODS_COUNT = "reduce_goods_count"; //减少购物车单个�
 export const SELECTED_ALL_GOODS = "selected_all_goods"; //是否选中所有的商品
 export const SELECTED_SINGLE_GOODS = "selected_single_goods"; //单个商品的选中和取消
 export const DEL_SINGLE_GOODS = "del_single_goods"; //单个商品的删除
+export const CART_COUNT = "cart_count"; //购物车商品数量
 
 export const GET_SINGLE_GOODS = "get_single_goods"; //获取单个商品的数据
 export const SHIPPINGS_LIST = "shippings_list"; //收货地址列表数据

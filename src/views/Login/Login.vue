@@ -289,6 +289,8 @@ export default {
         //成功
         //6.1同步用户数据
         this.syncUserInfo(this.userInfo);
+        //获取购物车商品数量
+        this.$store.dispatch("getCartCount");
         //6.2回到主界面
         this.$router.replace("/home");
         console.log("登录成功");

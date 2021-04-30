@@ -3,13 +3,16 @@
     <user-header />
     <!-- <order-header title="个人中心"> </order-header> -->
     <div class="container clearfix">
+      <!-- 左侧菜单栏 -->
       <div class="aside">
+        <!-- 头像 -->
         <div class="headshot">
           <div class="user-headshot">
             <img src="../../assets/images/touxiang.jpg" />
             <p>{{ username | phoneFormat }}</p>
           </div>
         </div>
+        <!-- 菜单 -->
         <ul class="me-list">
           <li @click.stop="showContent(0)">
             <div class="menu-item" :class="{ selected: currentIndex === 0 }">
@@ -74,6 +77,8 @@
           </li>
         </ul>
       </div>
+
+      <!-- 基本信息 -->
       <div class="me-content">
         <div class="user-info" :class="{ show: currentIndex === 0 }">
           <h2 class="info-title">基本信息</h2>
@@ -111,6 +116,8 @@
             </li>
           </ul>
         </div>
+
+        <!-- 编辑个人信息 -->
         <div class="edit-info">
           <div class="base-info" :class="{ show: currentIndex === 1 }">
             <h2 class="info-title">编辑信息</h2>
@@ -169,48 +176,49 @@
               </li>
             </ul>
             <div class="submit-info">
-              <button @click="saveUserInfo">保存</button>
+              <button @click="saveUserInfo">保存更改</button>
             </div>
           </div>
         </div>
+
+        <!-- 订单列表 -->
         <div class="order-info" :class="{ show: currentIndex === 2 }">
           <h2 class="info-title">订单列表</h2>
           <ul class="order-list">
-            <li class="order-item">
+            <li
+              class="order-item"
+              v-for="(item, index) in orderlist"
+              :key="index"
+            >
               <div class="item-title">
-                <p>2021-04-13 | wenwen | 订单号：20210411403800 | 在线支付</p>
-                <p>应付金额：<span>306</span>元</p>
+                <p>
+                  2021-04-13 10:46&nbsp;&nbsp;&nbsp;&nbsp;订单号：{{
+                    item.order_no
+                  }}
+                </p>
+                <p>
+                  合计：<span>{{ item.total_price }}</span
+                  >元
+                </p>
               </div>
               <div class="item-detail">
                 <ul class="goods-info">
-                  <li>
-                    <img
-                      src="../../assets/images/shop_list/dog/goods1.jpg"
-                      alt=""
-                    />
-                    <p>谷登 肠胃宝益生菌酵素配方 5g*10包 犬猫通用 调理肠胃</p>
+                  <li v-for="(goods, index) in item.goodslist" :key="index">
+                    <div class="info-main">
+                      <img :src="goods.thumb_url" />
+                      <p>{{ goods.goods_name }}</p>
+                    </div>
+                    <p class="info-num">
+                      <span>{{ goods.price }}</span
+                      >×<span>{{ goods.buy_count }}</span>
+                    </p>
+                    <p class="info-total">
+                      ¥{{ goods.price * goods.buy_count }}
+                    </p>
                   </li>
                 </ul>
-                <div class="pay-state">未支付</div>
               </div>
-            </li>
-            <li class="order-item">
-              <div class="item-title">
-                <p>2021-04-13 | wenwen | 订单号：20210411403800 | 在线支付</p>
-                <p>应付金额：<span>306</span>元</p>
-              </div>
-              <div class="item-detail">
-                <ul class="goods-info">
-                  <li>
-                    <img
-                      src="../../assets/images/shop_list/dog/goods1.jpg"
-                      alt=""
-                    />
-                    <p>谷登 肠胃宝益生菌酵素配方 5g*10包 犬猫通用 调理肠胃</p>
-                  </li>
-                </ul>
-                <div class="pay-state">未支付</div>
-              </div>
+              <div class="pay-state">未支付</div>
             </li>
           </ul>
         </div>
@@ -240,7 +248,6 @@ export default {
       user_sign: "" //个性签名
     };
   },
-
   watch: {
     //对userInfo进行深度监听，当数据有变化时跟着变化
     userInfo: {
@@ -255,8 +262,12 @@ export default {
       deep: true
     }
   },
+  mounted() {
+    //请求订单列表数据
+    this.$store.dispatch("reqOrderList");
+  },
   computed: {
-    ...mapState(["userInfo"]),
+    ...mapState(["userInfo", "orderlist"]),
     username() {
       if (!this.userInfo.user_phone) {
         return this.userInfo.user_name;
@@ -337,7 +348,7 @@ export default {
     .container
       margin 30px auto
       .aside
-        width 235px
+        width 220px
         // background #F8F9FA
         border-radius 4px
         background #fff
@@ -352,8 +363,8 @@ export default {
             left 50%
             transform translateX(-50%)
             img
-              width 100px
-              height 100px
+              width 80px
+              height 80px
               border-radius 50%
             p
               margin-top 12px
@@ -387,7 +398,7 @@ export default {
               &.show
                 display block
       .me-content
-        margin-left 255px
+        margin-left 240px
         background #fff
         border-radius 4px
         .user-info, .base-info, .order-info
@@ -443,9 +454,9 @@ export default {
           .info-title
             margin-bottom 24px
           .order-list
+            font-size 14px
             .order-item
               border 1px solid #e1e1e1
-              border-radius 4px
               overflow hidden
               margin-bottom 24px
               &:last-child
@@ -454,24 +465,42 @@ export default {
                 display flex
                 justify-content space-between
                 align-items center
-                height 50px
                 background #fffaf7
-                padding 0 16px
+                padding 10px 16px
                 span
-                  font-size 20px
+                  font-size 16px
               .item-detail
-                display flex
-                justify-content space-between
-                padding 20px
+                padding 10px 20px
+                border-top 1px solid #e1e1e1
+                border-bottom 1px solid #e1e1e1
                 .goods-info > li
+                    display flex
+                    justify-content space-between
                     font-size 15px
-                    margin-bottom 20px
+                    padding 10px 0
                     display flex
                     align-items center
+                    border-bottom 1px dashed #e1e1e1
                     &:last-child
                       margin-bottom 0
-                    img
-                      width 50px
-                    p
-                      margin-left 8px
+                      border-bottom none
+                    .info-main
+                      display flex
+                      align-items center
+                      flex 3
+                      img
+                        width 80px
+                      p
+                        margin-left 20px
+                    .info-num
+                      flex 1
+                      text-align right
+                    .info-total
+                      flex 1
+                      text-align right
+              .pay-state
+                  color #f60
+                  text-align right
+                  padding 10px 16px
+                  font-size 15px
 </style>

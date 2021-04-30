@@ -184,7 +184,12 @@
 <script>
 import { mapState } from "vuex";
 import { Message, Input, Select, Option } from "element-ui";
-import { addAddress, updateAddress, addOrders } from "../../../api/index";
+import {
+  addAddress,
+  updateAddress,
+  addOrders,
+  updateCartGoods
+} from "../../../api/index";
 import OrderHeader from "../../../components/OrderHeader";
 import Modal from "../../../components/Modal";
 export default {
@@ -360,11 +365,8 @@ export default {
       }
       //生成一个订单编号 当前日期 + 6位随机数
       let orderNo = this.getProjectNum() + Math.floor(Math.random() * 1000000);
-
       //拼接收货地址
       let addressInfo = `${addressItem.rec_province} ${addressItem.rec_city} ${addressItem.rec_district} ${addressItem.rec_address}`;
-
-      // console.log(this.totalPrice);
       //提交订单并删除购物车数据
       let result = await addOrders(
         orderNo,
@@ -373,13 +375,18 @@ export default {
         addressInfo,
         this.totalPrice
       );
-      // console.log(result);
+      //订单提交成功
       if (result.success_code === 200) {
-        //跳转页面
+        //跳转页面并传递订单号
         this.$router.push({
           path: "/order/pay",
           query: { orderNo }
         });
+        //更新购物车数据，删除被选中的商品
+        let mes = await updateCartGoods();
+        console.log(mes);
+        //获取购物车商品数量
+        this.$store.dispatch("getCartCount");
       }
     },
 

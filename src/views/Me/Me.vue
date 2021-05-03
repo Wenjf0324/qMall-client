@@ -192,12 +192,12 @@
             >
               <div class="item-title">
                 <p>
-                  2021-04-13 10:46&nbsp;&nbsp;&nbsp;&nbsp;订单号：{{
+                  日期：{{ item.create_time }}&nbsp;&nbsp;&nbsp;&nbsp;订单号：{{
                     item.order_no
                   }}
                 </p>
                 <p>
-                  合计：<span>{{ item.total_price }}</span
+                  合计：<span>{{ item.total_price | moneyFormat() }}</span
                   >元
                 </p>
               </div>
@@ -209,11 +209,12 @@
                       <p>{{ goods.goods_name }}</p>
                     </div>
                     <p class="info-num">
-                      <span>{{ goods.price }}</span
-                      >×<span>{{ goods.buy_count }}</span>
+                      <span>{{ goods.price | moneyFormat() }}元</span>×<span>{{
+                        goods.buy_count
+                      }}</span>
                     </p>
                     <p class="info-total">
-                      ¥{{ goods.price * goods.buy_count }}
+                      {{ (goods.price * goods.buy_count) | moneyFormat() }}元
                     </p>
                   </li>
                 </ul>
@@ -276,7 +277,13 @@ export default {
       }
     }
   },
+  //过滤器
   filters: {
+    // 格式化金钱
+    moneyFormat(money) {
+      if (!money) return "0.00";
+      return Number(money).toFixed(2);
+    },
     //手机号显示格式
     phoneFormat(val) {
       //2.判断数组是否为手机号
@@ -341,27 +348,31 @@ export default {
   clear both
 .me-page
     width 100%
-    height auto
+    height 100%
     background #f5f5f5
     position relative
-    padding-bottom 30px
     .container
-      margin 30px auto
+      padding 30px 0
+      position absolute
+      top 50px
+      left 50%
+      bottom 0
+      transform translateX(-50%)
       .aside
         width 220px
-        // background #F8F9FA
+        height 100%
         border-radius 4px
         background #fff
         float left
         .headshot
-          height 180px
+          height 170px
           position relative
           text-align center
           .user-headshot
             position absolute
-            top 25px
+            top 50%
             left 50%
-            transform translateX(-50%)
+            transform translate(-50%, -50%)
             img
               width 80px
               height 80px
@@ -398,6 +409,7 @@ export default {
               &.show
                 display block
       .me-content
+        height 100%
         margin-left 240px
         background #fff
         border-radius 4px
@@ -434,14 +446,12 @@ export default {
                 &::placeholder
                   color transparent
             .submit-info
-              margin-top 50px
+              margin-top 40px
               text-align center
               button
                 width 160px
-                height 30px
-                line-height 30px
+                height 35px
                 font-size 16px
-                text-align center
                 background #20bfa9
                 color #fff
                 border none
@@ -450,11 +460,23 @@ export default {
                 &:focus
                   outline none
         .order-info
-          padding 36px
+          height 100%
+          padding 24px 20px 24px 32px
           .info-title
-            margin-bottom 24px
+            margin-bottom 20px
           .order-list
+            height 90%
             font-size 14px
+            padding-right 16px
+            overflow-x hidden
+            overflow-y scroll
+            &::-webkit-scrollbar
+              width 6px
+            &::-webkit-scrollbar-track
+              background transparent
+            &::-webkit-scrollbar-thumb
+              background rgba(0,0,0,0.2)
+              border-radius 8px
             .order-item
               border 1px solid #e1e1e1
               overflow hidden
@@ -465,18 +487,17 @@ export default {
                 display flex
                 justify-content space-between
                 align-items center
-                background #fffaf7
+                // background #fffaf7
                 padding 10px 16px
                 span
                   font-size 16px
               .item-detail
                 padding 10px 20px
                 border-top 1px solid #e1e1e1
-                border-bottom 1px solid #e1e1e1
                 .goods-info > li
                     display flex
                     justify-content space-between
-                    font-size 15px
+                    font-size 14px
                     padding 10px 0
                     display flex
                     align-items center
@@ -489,7 +510,7 @@ export default {
                       align-items center
                       flex 3
                       img
-                        width 80px
+                        width 70px
                       p
                         margin-left 20px
                     .info-num
@@ -501,6 +522,6 @@ export default {
               .pay-state
                   color #f60
                   text-align right
-                  padding 10px 16px
-                  font-size 15px
+                  padding 0 16px 10px 0
+                  font-size 16px
 </style>

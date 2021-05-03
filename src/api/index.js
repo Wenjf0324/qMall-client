@@ -182,6 +182,7 @@ export const updateAddress = (
 //2.20提交订单
 export const addOrders = (
   order_no,
+  create_time,
   rec_name,
   rec_phone,
   rec_addressInfo,
@@ -191,6 +192,7 @@ export const addOrders = (
     BASE_URL + "/api/add_orders",
     {
       order_no,
+      create_time,
       rec_name,
       rec_phone,
       rec_addressInfo,

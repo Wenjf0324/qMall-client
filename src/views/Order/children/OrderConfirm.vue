@@ -216,6 +216,8 @@ export default {
 
     //请求收货地址列表数据
     this.$store.dispatch("reqShippingsList");
+
+    this.getCreateTime();
   },
   computed: {
     ...mapState(["cartgoods", "shippingslist"]), //获取购物车数据
@@ -365,11 +367,14 @@ export default {
       }
       //生成一个订单编号 当前日期 + 6位随机数
       let orderNo = this.getProjectNum() + Math.floor(Math.random() * 1000000);
+      //记录订单的生成时间
+      let createTime = this.getCreateTime();
       //拼接收货地址
       let addressInfo = `${addressItem.rec_province} ${addressItem.rec_city} ${addressItem.rec_district} ${addressItem.rec_address}`;
-      //提交订单并删除购物车数据
+      //提交订单
       let result = await addOrders(
         orderNo,
+        createTime,
         addressItem.rec_name,
         addressItem.rec_phone,
         addressInfo,
@@ -409,6 +414,43 @@ export default {
         currentDate += "0" + Day;
       }
       return currentDate;
+    },
+
+    //获取订单生成时的日期和时间
+    getCreateTime() {
+      let myDate = new Date();
+      const year = myDate.getFullYear(); //获取当前年份 支持IE和火狐
+      const month = myDate.getMonth() + 1; //获取中国区月份
+      const day = myDate.getDate(); //获取几号
+      const hours = myDate.getHours(); //获取几时
+      const minutes = myDate.getMinutes(); //获取几分
+
+      let currentDate = String(year); //当前日期
+      //判断月份和几号是否大于10或者小于10
+      if (month >= 10) {
+        currentDate += "-" + month;
+      } else {
+        currentDate += "-0" + month;
+      }
+      if (day >= 10) {
+        currentDate += "-" + day;
+      } else {
+        currentDate += "-0" + day;
+      }
+      let currentTime; //当前时间
+      //时
+      if (hours >= 10) {
+        currentTime = String(hours);
+      } else {
+        currentTime = "0" + String(hours);
+      }
+      //分
+      if (minutes >= 10) {
+        currentTime += ":" + minutes;
+      } else {
+        currentTime += ":0" + minutes;
+      }
+      return currentDate + " " + currentTime; //返回日期时间
     }
   }
 };

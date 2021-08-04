@@ -30,3 +30,4 @@ export const ADD_SINGLE_ADDRESS = "add_single_address"; //单个收货地址的�
 
 export const ORDER_LIST = "order_list"; //单个订单数据
 export const GET_SINGLE_ORDERS = "get_single_orders"; //单个订单数据
+export const DEL_SINGLE_ORDER = "del_single_order"; //单个订单的删除

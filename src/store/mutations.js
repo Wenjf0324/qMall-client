@@ -28,7 +28,8 @@ import {
   DEL_SINGLE_ADDRESS,
   ADD_SINGLE_ADDRESS,
   GET_SINGLE_ORDERS,
-  ORDER_LIST
+  ORDER_LIST,
+  DEL_SINGLE_ORDER
 } from "./mutation-types";
 
 export default {
@@ -184,5 +185,10 @@ export default {
     // }
 
     state.singleorders = singleorders;
+  },
+
+  [DEL_SINGLE_ORDER](state, { order }) {
+    const index = state.orderlist.indexOf(order);
+    state.orderlist.splice(index, 1);
   }
 };

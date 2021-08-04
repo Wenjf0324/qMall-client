@@ -1,10 +1,6 @@
 <template>
   <div class="order-pay">
-    <order-header title="订单支付">
-      <template v-slot:tip>
-        <span>请谨防钓鱼链接或诈骗电话</span>
-      </template>
-    </order-header>
+    <order-header title="订单支付"> </order-header>
     <div class="pay-container">
       <div class="order-details">
         <div class="item-order">
@@ -15,7 +11,7 @@
           </div>
           <div class="order-info">
             <h2>订单提交成功！去付款咯~</h2>
-            <p>请在<span>30分钟</span>内完成支付，超时后将取消订单</p>
+            <p>请在<span>30分钟</span>内完成支付，超时后将自动取消订单</p>
             <p>收货信息：{{ addressInfo }}</p>
           </div>
           <div class="order-total">
@@ -70,8 +66,18 @@
         <h3>选择以下支付方式付款</h3>
         <div class="pay-way">
           <p>支付平台</p>
-          <div class="pay pay-ali"></div>
-          <div class="pay pay-wechat"></div>
+          <div
+            class="pay pay-ali"
+            :class="{ checked: payType === 1 }"
+            @mouseover="payType = 1"
+            @mouseout="payType = 0"
+          ></div>
+          <div
+            class="pay pay-wechat"
+            :class="{ checked: payType === 2 }"
+            @mouseover="payType = 2"
+            @mouseout="payType = 0"
+          ></div>
         </div>
       </div>
     </div>
@@ -88,7 +94,8 @@ export default {
     return {
       isActive: false, //是否显示订单详情
       showDetail: false, //订单详情的上拉和下拉图标的隐藏
-      orderNo: this.$route.query.orderNo //订单号
+      orderNo: this.$route.query.orderNo, //订单号
+      payType: 0 //支付类型 1 支付宝支付，2 微信支付
     };
   },
   mounted() {
@@ -105,7 +112,7 @@ export default {
         this.orderlist.forEach((orders, index) => {
           if (orders.order_no === this.orderNo) {
             currentorders = orders;
-            console.log(currentorders);
+            // console.log(currentorders);
           }
         });
       }
@@ -237,6 +244,8 @@ export default {
           cursor pointer
           &:last-child
             margin-left 20px
+          &.checked
+              border 1px solid #f60
         .pay-ali
           background url('../../../assets/images/pay-ali.png') no-repeat 50%
           background-size 103px 38px

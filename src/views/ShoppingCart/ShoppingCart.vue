@@ -5,7 +5,7 @@
     <!-- 主体部分 -->
     <div class="cart-main">
       <div class="container">
-        <div class="empty-cart">
+        <div class="empty-cart" v-if="cartgoods.length === 0">
           <p>
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-cart"></use>
@@ -14,90 +14,92 @@
             <router-link to="/">逛逛吧！</router-link>
           </p>
         </div>
-        <div class="cart-box">
-          <ul class="cart-item-head">
-            <li>
-              <span
-                class="checkbox"
-                :class="{ checked: isSelectedAll }"
-                @click.stop="selectedAll(isSelectedAll)"
-              ></span>
-              全选
-            </li>
-            <li>商品名称</li>
-            <li>单价(元)</li>
-            <li>数量</li>
-            <li>小计(元)</li>
-            <li>操作</li>
-          </ul>
-          <!-- 遍历购物车数组 -->
-          <ul class="cart-item-list" v-if="cartgoods.length > 0">
-            <li
-              class="cart-item"
-              v-for="(item, index) in cartgoods"
-              :key="index"
-            >
-              <!-- 是否选中 -->
-              <div class="item-check">
+        <div v-if="cartgoods.length > 0">
+          <div class="cart-box">
+            <ul class="cart-item-head">
+              <li>
                 <span
                   class="checkbox"
-                  :class="{ checked: item.is_checked }"
-                  @click.stop="singleGoodsSelected(item)"
+                  :class="{ checked: isSelectedAll }"
+                  @click.stop="selectedAll(isSelectedAll)"
                 ></span>
-              </div>
-              <!-- 商品名称 -->
-              <div class="item-name">
-                <img v-lazy="item.thumb_url" width="100%" />
-                <span>{{ item.goods_name }}</span>
-              </div>
-              <!-- 单价 -->
-              <div class="item-price">
-                {{ item.price | moneyFormat() }}
-              </div>
-              <!-- 数量 -->
-              <div class="item-num">
-                <div class="num-box">
-                  <span @click.stop="updateGoodsCount(item, false)">-</span>
-                  <input
-                    type="text"
-                    value="1"
-                    v-model="item.buy_count"
-                    disabled
-                  />
-                  <span @click.stop="updateGoodsCount(item, true)">+</span>
+                全选
+              </li>
+              <li>商品名称</li>
+              <li>单价(元)</li>
+              <li>数量</li>
+              <li>小计(元)</li>
+              <li>操作</li>
+            </ul>
+            <!-- 遍历购物车数组 -->
+            <ul class="cart-item-list">
+              <li
+                class="cart-item"
+                v-for="(item, index) in cartgoods"
+                :key="index"
+              >
+                <!-- 是否选中 -->
+                <div class="item-check">
+                  <span
+                    class="checkbox"
+                    :class="{ checked: item.is_checked }"
+                    @click.stop="singleGoodsSelected(item)"
+                  ></span>
                 </div>
-              </div>
-              <!-- 小计 -->
-              <div class="item-total">
-                {{ (item.price * item.buy_count) | moneyFormat() }}
-              </div>
-              <!-- 删除操作 -->
-              <div class="item-del">
-                <svg
-                  class="icon"
-                  aria-hidden="true"
-                  @click.stop="clickTrash(item, item.goods_id)"
-                >
-                  <use xlink:href="#icon-close"></use>
-                </svg>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="cart-footer">
-          <div class="cart-footer-left">
-            <router-link to="/">继续购物</router-link>
-            <p>
-              共 <span>{{ cartcount }}</span> 件商品，已选择
-              <span>{{ selectedGoodsCount }}</span> 件
-            </p>
+                <!-- 商品名称 -->
+                <div class="item-name">
+                  <img v-lazy="item.thumb_url" width="100%" />
+                  <span>{{ item.goods_name }}</span>
+                </div>
+                <!-- 单价 -->
+                <div class="item-price">
+                  {{ item.price | moneyFormat() }}
+                </div>
+                <!-- 数量 -->
+                <div class="item-num">
+                  <div class="num-box">
+                    <span @click.stop="updateGoodsCount(item, false)">-</span>
+                    <input
+                      type="text"
+                      value="1"
+                      v-model="item.buy_count"
+                      disabled
+                    />
+                    <span @click.stop="updateGoodsCount(item, true)">+</span>
+                  </div>
+                </div>
+                <!-- 小计 -->
+                <div class="item-total">
+                  {{ (item.price * item.buy_count) | moneyFormat() }}
+                </div>
+                <!-- 删除操作 -->
+                <div class="item-del">
+                  <svg
+                    class="icon"
+                    aria-hidden="true"
+                    @click.stop="clickTrash(item, item.goods_id)"
+                  >
+                    <use xlink:href="#icon-close"></use>
+                  </svg>
+                </div>
+              </li>
+            </ul>
           </div>
-          <div class="cart-footer-right">
-            <p>
-              合计：<span>{{ totalPrice | moneyFormat() }}</span
-              >元
-            </p>
-            <button @click.stop="goToOrder()">选好了</button>
+          <div class="cart-footer">
+            <div class="cart-footer-left">
+              <router-link to="/">继续购物</router-link>
+              <p>
+                共 <span>{{ cartcount }}</span> 件商品，已选择
+                <span>{{ selectedGoodsCount }}</span> 件
+              </p>
+            </div>
+            <div class="cart-footer-right">
+              <p>
+                合计：<span>{{ totalPrice | moneyFormat() }}</span
+                >元
+              </p>
+              <button @click.stop="goToOrder()">选好了</button>
+            </div>
           </div>
         </div>
       </div>
@@ -256,7 +258,6 @@ export default {
                 color #999
                 text-align center
                 margin 120px 0 220px
-                display none
                 .icon
                     font-size 40px
                     color #ff6500

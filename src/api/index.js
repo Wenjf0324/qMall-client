@@ -203,3 +203,7 @@ export const addOrders = (
 
 // 请求订单列表数据
 export const getOrderList = () => ajax(BASE_URL + "/api/orderlist");
+
+//单个订单的删除
+export const delOrderSingle = order_no =>
+  ajax(BASE_URL + "/api/del_order_single", { order_no }, "POST");

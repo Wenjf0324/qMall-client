@@ -219,7 +219,10 @@
                   </li>
                 </ul>
               </div>
-              <div class="pay-state">未支付</div>
+              <div class="pay-state">
+                <span @click="switchToPay(item.order_no)">未支付</span>
+                <span @click="cancelOrder(item)">取消</span>
+              </div>
             </li>
           </ul>
         </div>
@@ -233,7 +236,7 @@ import UserHeader from "../../components/UserHeader.vue";
 import OrderHeader from "../../components/OrderHeader";
 import Modal from "../../components/Modal";
 import { mapState } from "vuex";
-import { Message, Radio, RadioGroup, DatePicker } from "element-ui";
+import { Message, MessageBox, Radio, RadioGroup, DatePicker } from "element-ui";
 import { changeUserInfo } from "../../api/index";
 export default {
   name: "me",
@@ -336,6 +339,23 @@ export default {
       if (result.success_code === 200) {
         Message.success("保存成功");
       }
+    },
+    //跳转到支付页面
+    switchToPay(orderNo) {
+      //跳转页面并传递订单号
+      this.$router.push({
+        path: "/order/pay",
+        query: { orderNo }
+      });
+    },
+    cancelOrder(order) {
+      MessageBox.confirm("您确定取消该订单吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.$store.dispatch("delOrderSingle", { order });
+      });
     }
   }
 };
@@ -520,8 +540,13 @@ export default {
                       flex 1
                       text-align right
               .pay-state
-                  color #f60
                   text-align right
                   padding 0 16px 10px 0
-                  font-size 16px
+                  font-size 15px
+                  span
+                    cursor pointer
+                    &:first-child
+                      color #f60
+                      display inline-block
+                      margin-right 12px
 </style>

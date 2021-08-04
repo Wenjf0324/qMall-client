@@ -21,7 +21,7 @@ import {
   getShippingsList,
   delAddressSingle,
   getOrderList,
-  getSingleOrders
+  delOrderSingle
 } from "../api";
 
 import {
@@ -51,8 +51,8 @@ import {
   SHIPPINGS_LIST,
   DEL_SINGLE_ADDRESS,
   ADD_SINGLE_ADDRESS,
-  GET_SINGLE_ORDERS,
-  ORDER_LIST
+  ORDER_LIST,
+  DEL_SINGLE_ORDER
 } from "./mutation-types";
 
 export default {
@@ -238,18 +238,14 @@ export default {
     if (result.success_code === 200) {
       commit(ORDER_LIST, { orderlist: result.message });
     }
-  }
+  },
 
-  //获取单个订单详情数据
-  // async reqSingleOrders({ commit }, { orderNo }) {
-  //   console.log(orderNo);
-  //   const result = await getSingleOrders(orderNo);
-  //   console.log(result);
-  //   if (result.success_code === 200) {
-  //     commit(GET_SINGLE_ORDERS, { singleorders: result.message });
-  //   }
-  // }
-  // getSingleOrders({ commit }, { orderNo }) {
-  //   commit(GET_SINGLE_ORDERS, { orderNo });
-  // }
+  //单个订单的删除
+  async delOrderSingle({ commit }, { order }) {
+    commit(DEL_SINGLE_ORDER, { order });
+    const result = await delOrderSingle(order.order_no);
+    if (result.success_code === 200) {
+      Message.success(result.message);
+    }
+  }
 };

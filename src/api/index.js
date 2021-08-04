@@ -1,7 +1,7 @@
 import ajax from "./ajax";
 
 //1.基础路径
-const BASE_URL = "/api";
+const BASE_URL = "/";
 
 //2.请求方法
 
@@ -203,3 +203,7 @@ export const addOrders = (
 
 // 请求订单列表数据
 export const getOrderList = () => ajax(BASE_URL + "/api/orderlist");
+
+//单个订单的删除
+export const delOrderSingle = order_no =>
+  ajax(BASE_URL + "/api/del_order_single", { order_no }, "POST");

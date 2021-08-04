@@ -30,9 +30,7 @@
             <!-- 手机验证码登录部分 -->
             <div :class="{ current: loginMode }">
               <section class="login-message">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-shoujihao"></use>
-                </svg>
+                <Icon name="shoujihao" />
                 <input
                   type="tel"
                   maxlength="11"
@@ -42,9 +40,7 @@
               </section>
 
               <section class="login-verification">
-                <svg class="icon on" aria-hidden="true">
-                  <use xlink:href="#icon-verify"></use>
-                </svg>
+                <Icon name="verify" />
                 <input
                   type="tel"
                   maxlength="8"
@@ -77,9 +73,7 @@
             <!-- 密码登录部分 -->
             <div :class="{ current: !loginMode }">
               <section class="login-message">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-user"></use>
-                </svg>
+                <Icon name="user" />
                 <input
                   type="text"
                   maxlength="11"
@@ -89,9 +83,7 @@
               </section>
 
               <section class="login-verification">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-password"></use>
-                </svg>
+                <Icon name="password" />
                 <!-- 密文 -->
                 <input
                   type="password"
@@ -109,22 +101,17 @@
                   v-model="pwd"
                 />
                 <div class="switch-show">
-                  <div
+                  <Icon
+                    name="password_off"
                     :class="{ selected: pwdMode }"
                     @click.prevent="changePwdMode(false)"
-                  >
-                    <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-password_off"></use>
-                    </svg>
-                  </div>
-                  <div
+                  />
+
+                  <Icon
+                    name="password_visible"
                     :class="{ selected: !pwdMode }"
                     @click.prevent="changePwdMode(true)"
-                  >
-                    <svg class="icon" aria-hidden="true">
-                      <use xlink:href="#icon-password_visible"></use>
-                    </svg>
-                  </div>
+                  />
                 </div>
               </section>
 
@@ -405,7 +392,6 @@ export default {
                         cursor pointer
                         .icon
                           font-size 21px
-                        > div
                           display none
                         >.selected
                           display block

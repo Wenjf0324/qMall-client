@@ -1,10 +1,5 @@
 <template>
   <div class="order-page">
-    <!-- <order-header :title="title">
-      <template v-slot:tip>
-        <span>{{ tip }}</span>
-      </template>
-    </order-header> -->
     <router-view></router-view>
     <order-footer />
   </div>

@@ -17,9 +17,7 @@
           <li @click.stop="showContent(0)">
             <div class="menu-item" :class="{ selected: currentIndex === 0 }">
               <div class="menu-title">
-                <svg class="icon" style="font-size:18px;" aria-hidden="true">
-                  <use xlink:href="#icon-ziliao"></use>
-                </svg>
+                <Icon name="ziliao" style="font-size:18px;" />
                 <span>我的资料</span>
               </div>
               <div class="zhankai">
@@ -36,19 +34,11 @@
               @click.stop="showContent(1)"
             >
               <div class="menu-title">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-bianji"></use>
-                </svg>
+                <Icon name="bianji" />
                 编辑信息
               </div>
               <div class="zhankai">
-                <svg
-                  class="icon"
-                  :class="{ open: editMenu }"
-                  aria-hidden="true"
-                >
-                  <use xlink:href="#icon-zhankai"></use>
-                </svg>
+                <Icon name="zhankai" :class="{ open: editMenu }" />
               </div>
             </div>
             <ul class="edit-list" :class="{ show: editMenu }">
@@ -63,15 +53,11 @@
               @click.stop="showContent(2)"
             >
               <div class="menu-title">
-                <svg class="icon" style="font-size:15px" aria-hidden="true">
-                  <use xlink:href="#icon-dingdan"></use>
-                </svg>
+                <Icon name="dingdan" style="font-size:15px" />
                 我的订单
               </div>
               <div class="zhankai">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-zhankai"></use>
-                </svg>
+                <Icon name="zhankai" />
               </div>
             </div>
           </li>

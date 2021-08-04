@@ -1,16 +1,8 @@
 //1.引入对应模块
 import Vue from "vue";
 import VueRouter from "vue-router";
-
-// import Home from "../views/Home/Home";
-// import Dog from "../views/Dog/Dog";
-// import Cat from "../views/Cat/Cat";
-// import Login from "../views/Login/Login";
-// import ShoppingCart from "../views/ShoppingCart/ShoppingCart";
 import Me from "../views/Me/Me";
 import Manager from "../views/Manager/Manager";
-// import Detail from "../views/Detail";
-// import Order from "../views/Order/Order";
 
 //配置一级路由的路由组件懒加载
 const Home = () => import("../views/Home");
@@ -34,9 +26,7 @@ import CatHealth from "../views/Cat/children/CatHealth";
 import CatToy from "../views/Cat/children/CatToy";
 
 import OrderConfirm from "../views/Order/children/OrderConfirm";
-import OrderList from "../views/Order/children/OrderList";
 import OrderPay from "../views/Order/children/OrderPay";
-import Alipay from "../views/Order/children/OrderAlipay";
 
 const includPush = VueRouter.prototype.push;
 
@@ -64,7 +54,7 @@ export default new VueRouter({
     {
       path: "/login",
       component: Login,
-      meta: { showNavHeader: false, showFooter: true }
+      meta: { showNavHeader: false, showFooter: false }
     },
     {
       path: "/dog",
@@ -176,12 +166,6 @@ export default new VueRouter({
       component: Order,
       children: [
         {
-          path: "list",
-          name: "order-list",
-          component: OrderList,
-          meta: { showNavHeader: false, showFooter: false }
-        },
-        {
           path: "confirm",
           name: "order-confirm",
           component: OrderConfirm,
@@ -191,13 +175,6 @@ export default new VueRouter({
           path: "pay",
           name: "order-pay",
           component: OrderPay,
-          meta: { showNavHeader: false, showFooter: false }
-        },
-        // 支付宝中间页面
-        {
-          path: "alipay",
-          name: "alipay",
-          component: Alipay,
           meta: { showNavHeader: false, showFooter: false }
         }
       ]

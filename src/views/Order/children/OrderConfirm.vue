@@ -35,15 +35,11 @@
               <div class="action">
                 <!-- 删除地址 -->
                 <a href="javascript:;" @click.stop="delAddress(item)">
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-delete"></use>
-                  </svg>
+                  <Icon name="delete" />
                 </a>
                 <!-- 编辑地址 -->
                 <a href="javascript:;" @click.stop="editAddressModal(item)">
-                  <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-edit"></use>
-                  </svg>
+                  <Icon name="edit" />
                 </a>
               </div>
             </li>
@@ -51,9 +47,7 @@
           <ul>
             <li class="add-adr" @click.stop="openAddressModal">
               <div class="add">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-Add"></use>
-                </svg>
+                <Icon name="Add" />
                 <h3>添加新地址</h3>
               </div>
             </li>

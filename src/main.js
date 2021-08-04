@@ -6,6 +6,7 @@ import store from "./store";
 import axios from "axios";
 import VueLazyLoad from "vue-lazyload";
 import loading from "./assets/images/loading/loading.png";
+import Icon from "@/components/Icon.vue";
 
 //mock开关
 // const mock = true;
@@ -38,6 +39,9 @@ Vue.use(VueLazyLoad, {
 });
 
 Vue.config.productionTip = false;
+
+//全局引入组件
+Vue.component("Icon", Icon);
 
 new Vue({
   el: "#app",

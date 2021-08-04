@@ -8,9 +8,7 @@
         <!-- 左边 -->
         <div class="aside">
           <div class="aside-title">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-cat"></use>
-            </svg>
+            <Icon name="cat" />
             <span>猫咪专区</span>
           </div>
           <ul class="aside-menu">

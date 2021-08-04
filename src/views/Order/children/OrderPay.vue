@@ -5,9 +5,7 @@
       <div class="order-details">
         <div class="item-order">
           <div class="icon-succ">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-submit"></use>
-            </svg>
+            <Icon name="submit" />
           </div>
           <div class="order-info">
             <h2>订单提交成功！去付款咯~</h2>
@@ -21,16 +19,10 @@
               }}</span
               >元
             </p>
-            <div>
+            <div @click.stop="showDetails()">
               订单详情
-              <div
-                class="icon-detailsbtn"
-                :class="{ up: showDetail }"
-                @click.stop="showDetails()"
-              >
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-down"></use>
-                </svg>
+              <div class="icon-detailsbtn" :class="{ up: showDetail }">
+                <Icon name="down" />
               </div>
             </div>
           </div>
@@ -56,10 +48,6 @@
               </li>
             </ul>
           </div>
-          <!-- <div class="item">
-            <div class="detail-title">发票信息:</div>
-            <div class="detail-info">电子发票 个人</div>
-          </div> -->
         </div>
       </div>
       <div class="pay-methods">

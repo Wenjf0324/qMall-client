@@ -64,7 +64,7 @@ export default new VueRouter({
     {
       path: "/login",
       component: Login,
-      meta: { showNavHeader: false, showFooter: true }
+      meta: { showNavHeader: false, showFooter: false }
     },
     {
       path: "/dog",
